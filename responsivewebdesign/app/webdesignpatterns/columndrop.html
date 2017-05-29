@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="../styles/webdesignpatterns/common.css">
+    <style type="text/css">
+        .container {
+            display: flex;
+            flex-flow: row wrap;
+        }
+
+        .c1, .c2, .c3 {
+            width: 100%;
+        }
+
+        @media (min-width: 600px) {
+            .c1 {
+                width: 60%;
+                order: 2;
+            }
+
+            .c2 {
+                width: 40%;
+                order: 1
+            }
+
+            .c3 {
+                width: 100%;
+                order: 3
+            }
+        }
+
+        @media (min-width: 800px) {
+            .c2, .c3 {
+                width: 20%;
+            }
+
+            .c1 {
+                width: 60%;
+            }
+        }
+    </style>
+    <title>Column Drop Layout</title>
+</head>
+<body>
+<div class="container" role="main">
+    <div class="c1"></div>
+    <div class="c2"></div>
+    <div class="c3"></div>
+</div>
+</body>
+</html>

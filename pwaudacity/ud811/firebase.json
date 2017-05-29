@@ -1,0 +1,11 @@
+{
+  "hosting": {
+    "public": "./1-12-skeleton",
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
+  }
+}

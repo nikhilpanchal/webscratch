@@ -1,0 +1,39 @@
+@media (orientation: portrait) {
+    h1 {
+        color: chartreuse;
+    }
+}
+
+@media (orientation: landscape) {
+    h1 {
+        color: cadetblue;
+    }
+}
+
+@media (min-width: 400px) {
+    h1 {
+        color: red;
+    }
+}
+
+@media (min-width: 500px) and (max-width: 640px) {
+    h1 {
+        color: fuchsia;
+    }
+
+    .desc:before {
+        content: 'This is the before content';
+    }
+
+    .desc:after {
+        content: "It's between 500 and 600px wide";
+    }
+}
+
+@media (min-width: 640px) {
+    h1 {
+        color: aqua;
+    }
+}
+
+/*The later rules override the earlier ones*/
