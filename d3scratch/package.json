@@ -1,0 +1,18 @@
+{
+  "name": "d3scratch",
+  "main": "index.js",
+  "version": "0.0.0",
+  "description": "Games with D3",
+  "private": true,
+  "author": "Nikhil Panchal",
+  "scripts": {
+    "test": "echo \"No test specified\"",
+    "build": "babel src -d lib",
+    "start": "webpack-dev-server"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "babel-cli": "^6.24.1",
+    "babel-preset-env": "^1.5.1"
+  }
+}
