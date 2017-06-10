@@ -1,4 +1,6 @@
-import * as d3 from 'd3'
 
-d3.selectAll('rect')
-    .style("fill", "orange");
+import Rectangle from './draw/rectangle'
+import './styles/home/main.css'
+
+let rectangle = new Rectangle();
+rectangle.render();
