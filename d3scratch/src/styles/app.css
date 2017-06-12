@@ -1,5 +1,6 @@
 @import "home/bar-chart.css";
 @import "home/basic.css";
+@import "home/hist.css";
 
 * {
     -webkit-box-sizing: border-box;
