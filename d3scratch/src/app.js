@@ -2,6 +2,7 @@ import Rectangle from './draw/rectangle'
 import BarChart from './draw/bar'
 import BarSvg from './draw/bar_svg'
 import Histogram from './draw/histogram'
+import BarDimple from './draw/bar_dimple'
 
 // let rectangle = new Rectangle();
 // rectangle.render();
@@ -19,9 +20,12 @@ function startPeriodicUpdates() {
     }, 3000);
 }
 
-let barSvg = new BarSvg();
-barSvg.render(data);
+// let barSvg = new BarSvg();
+// barSvg.render(data);
 
 
-let hist = new Histogram();
-hist.render(data);
+// let hist = new Histogram();
+// hist.render(data);
+
+let barDimple = new BarDimple();
+barDimple.render();
