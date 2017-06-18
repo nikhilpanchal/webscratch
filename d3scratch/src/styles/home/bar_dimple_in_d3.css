@@ -1,0 +1,26 @@
+
+.world_cup_svg circle {
+    opacity: 0.4;
+    fill: steelblue;
+}
+
+.world_cup_svg path {
+    fill: none;
+    stroke: black;
+    display: inline;
+}
+
+.world_cup_svg .x.axis path {
+    display: inline;
+}
+
+.world_cup_svg .axis {
+    font-family: arial;
+    font-size: 0.6em;
+}
+
+.world_cup_svg .line_plot {
+    fill: none;
+    stroke: #4eb0bb;
+    stroke-width: 1px;
+}

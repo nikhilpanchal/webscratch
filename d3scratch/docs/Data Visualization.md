@@ -59,6 +59,13 @@ was visually encoded.
  often by positions on the x or y axes on a graph. 
  
 
+## Choosing a Chart Type
+There's many decisions that one can make to arrive at the right chart type to use to visualize
+one's data. Here is a simple flow chart to follow to help in one's decision
+
+http://extremepresentation.com/wp-content/uploads/6a00d8341bfd2e53ef0148c699cc96970c.jpg
+
+
 ## Resources
 A good article explaining the points of Data types and visual encodings can be found here
 [Visual Encoding](https://www.targetprocess.com/articles/visual-encoding/)
