@@ -1,7 +1,7 @@
 
 .world_cup_svg circle {
     opacity: 0.4;
-    fill: steelblue;
+    /*fill: blue;*/
 }
 
 .world_cup_svg path {

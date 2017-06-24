@@ -37,18 +37,19 @@ export default class WorldCupGraph {
                     .enter()
                     .append("circle");
 
-                // Determine the minimum and maximum values of the X and Y axis values.
-                // This is done using the d3 extent call.
 
                 var getDataPointField = function (field) {
                     return function (dataRow) {
                         return dataRow[field];
                     }
-                }
+                };
 
                 // Try this with dataPoint.date
                 // Also try this using d3.extent(data, getDataPointField('date'));
                 // Mapping dates to pixels.
+
+                // Determine the minimum and maximum values of the X and Y axis values.
+                // This is done using the d3 extent call.
                 let timeExtent = d3.extent(data, (dataRow) => dataRow['date']);
 
                 // Mapping attendance to pixels.
@@ -81,10 +82,57 @@ export default class WorldCupGraph {
                     .attr('transform', 'translate(' + this.margin + ", 0)")
                     .call(countAxis);
 
+                /*
+                For each circle, set its x position according to its date
+                and its y position according to its attendance
+                add an attribute of radius which is of a fixed value
+                and voila !!
+                 */
                 d3.selectAll('circle')
                     .attr('cx', (d) => timeScale(d["date"]))
                     .attr('cy', (d) => countScale(d["attendance"]))
-                    .attr("r", this.radius);
+                    .attr("r", (d) => {
+                        if (d['home'] === d['team1'] || d['home'] === d['team2']) {
+                            return this.radius * 1.5;
+                        }
+
+                        return this.radius
+                    })
+                    .attr('fill', (d) => {
+                        if (d['home'] === d['team1'] || d['home'] === d['team2']) {
+                            return 'red';
+                        }
+
+                        return 'blue';
+                    });
+
+                // Add a legend
+                let legend = d3.select('.world_cup_svg')
+                    .append('g')
+                    .attr('class', 'legend')
+                    .attr('transform', 'translate(' + (this.width - 100) + ', 20)')
+                    .selectAll('g')
+                    .data(["Home", "Away"])
+                    .enter()
+                    .append('g');
+
+                legend.append('circle')
+                    .attr('cy', (d, i) => i*30)
+                    .attr('r', (d) => {
+                        if (d == 'Home') {
+                            return this.radius * 1.5;
+                        }
+
+                        return this.radius
+                    })
+                    .attr('fill', (d) => {
+                        return d === 'Home' ? 'red' : 'blue';
+                    });
+
+                legend.append('text')
+                    .attr('y', (d, i) => i*30 + 5)
+                    .attr('x', this.radius * 5)
+                    .text((d) => d);
             })
 
     }
