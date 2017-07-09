@@ -3,7 +3,7 @@ import BarChart from './draw/bar'
 import BarSvg from './draw/bar_svg'
 import Histogram from './draw/histogram'
 import BarDimple from './draw/bar_dimple'
-import WorldCupGraph from './draw/bar_in_d3'
+import WorldCupGraph from './draw/world_cup'
 
 // let rectangle = new Rectangle();
 // rectangle.render();
