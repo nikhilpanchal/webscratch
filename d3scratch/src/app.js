@@ -4,6 +4,8 @@ import BarSvg from './draw/bar_svg'
 import Histogram from './draw/histogram'
 import BarDimple from './draw/bar_dimple'
 import WorldCupGraph from './draw/world_cup'
+import Maps from './draw/maps'
+
 
 // let rectangle = new Rectangle();
 // rectangle.render();
@@ -25,11 +27,14 @@ function startPeriodicUpdates() {
 // barSvg.render(data);
 
 
-let hist = new Histogram();
-hist.render(data);
+// let hist = new Histogram();
+// hist.render(data);
 
 // let barDimple = new BarDimple();
 // barDimple.render();
 
-let worldCup = new WorldCupGraph();
-worldCup.render();
+// let worldCup = new WorldCupGraph();
+// worldCup.render();
+
+let maps = new Maps();
+maps.render();
