@@ -24,7 +24,7 @@ export default class Maps {
 
             let projection = d3.geoMercator().scale(175).translate([this.width/3, this.height/2]);
 
-            // the path function that processes the feature points to path svg elements
+            // the path generator function that processes the feature points and returns path svg elements
             let path = d3.geoPath(projection);
 
             svg.selectAll("path")

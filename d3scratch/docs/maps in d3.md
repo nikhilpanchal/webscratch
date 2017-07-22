@@ -12,12 +12,19 @@ the name of the country respectively
 polygon that marks the country's border on the map.
 
 
-In order to render maps, we need to first `project` the geoData. This is analogous to the scaling done in other D3 charts
-where we map data points to x and y pixel coordinates in an SVG element. Once projected, we need to use the `path` function
-to then render actual svg elements for each of the mapped pixels. What's curious and confusing is to actually render the 
-map, we use the svg `path` elements which will map to each of the `feature` objects in the incoming geojson. These svg 
-`path` objects are very flexible in that they take in an array of points in its `d` attribute that then specifies the 
-shape of the `path` that actually needs to be drawn.
+The technique used here to render the map is with SVG `path` elements. These elements are created using `path strings`
+that are produced from the geoJson `feature` elements using `path generator functions`. So you would call the `d3.geoPath`
+function that would return back a `path generator function`. The generator function then needs to be initialized with a
+`projection` (explain later). Then you run the path generator through each `Feature` object in the geoJson to get `path
+strings` that you then use to create `path` svg elements.
+
+The `projection` in maps is similar to the scale function used in other charts, in that it maps points from a 3-D 
+spherical globe (longitude and latitude) to a 2-D pixel range. In this example we've used a [mercator projection](https://en.wikipedia.org/wiki/Mercator_projection)
+that in loose terms does the projection by looking at the global between -82deg and +82deg latitude and unravels the 
+spherical globe into a 2-D plane by scaling points that are away from this range by a greater degree the further away you move.
+eg. the regions of the globe near the equator appear roughly the same size, but regions further north or south appear 
+larger, for instance, greenland appears in the same size as Australia, when in reality Australia is about 3 times larger.
+
 
 
 
