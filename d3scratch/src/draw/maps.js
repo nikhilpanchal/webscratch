@@ -7,7 +7,8 @@ import * as d3 from 'd3'
 export default class Maps {
     constructor() {
         this.dataFile = "/udacity/01_globe/world_countries.json";
-        this.margin = 75,
+        this.worldCupFile = "/udacity/01_globe/world_cup_geo.tsv";
+        this.margin = 200,
             this.width = 1920 - this.margin,
             this.height = 1080 - this.margin;
     }
@@ -22,7 +23,9 @@ export default class Maps {
                 .append("g")
                 .attr('class', 'map');
 
-            let projection = d3.geoMercator().scale(175).translate([this.width/3, this.height/2]);
+            let projection = d3.geoMercator()
+                .scale(175)         // Analogous to the zoom feature
+                .translate([this.width / 3, this.height / 1.5]);  // Used to shift the center of the map
 
             // the path generator function that processes the feature points and returns path svg elements
             let path = d3.geoPath(projection);
@@ -35,6 +38,44 @@ export default class Maps {
                 .style('stroke', 'black')
                 .style('stroke-width', '0.5')
                 .style('fill', 'rgb(9,157,257)');
+
+            function plotPoints(data) {
+                // draw circles logic
+                let nested = d3.nest()
+                    .key((d) => d['date'].getUTCFullYear())
+                    .rollup((leaves) => {
+                        console.table(leaves);
+                        let totalAttendance = d3.sum(leaves, (leaf) => leaf.attendance);
+
+                        let coords = leaves.map((d) => {
+                            return projection([+d.long, +d.lat])
+                        });
+
+                        let centerX = d3.mean(coords, function(d) {
+                            return d[0];
+                        });
+
+                        let centerY = d3.mean(coords, function(d) {
+                            return d[1];
+                        });
+
+                        return {
+                            'attendance': totalAttendance,
+                            'x': centerX,
+                            'y': centerY
+                        };
+                    })
+                    .entries(data);
+            }
+
+            let format = d3.timeParse("%d-%m-%Y (%H:%M h)");
+
+            d3.tsv(this.worldCupFile, (d) => {
+                d['attendance'] = +d['attendance'];
+                d['date'] = format(d['date']);
+
+                return d;
+            }, plotPoints);
         })
     }
 }
