@@ -44,7 +44,6 @@ export default class Maps {
                 let nested = d3.nest()
                     .key((d) => d['date'].getUTCFullYear())
                     .rollup((leaves) => {
-                        console.table(leaves);
                         let totalAttendance = d3.sum(leaves, (leaf) => leaf.attendance);
 
                         let coords = leaves.map((d) => {
@@ -66,6 +65,28 @@ export default class Maps {
                         };
                     })
                     .entries(data);
+
+                let radius = d3.scaleSqrt()
+                    .domain(d3.extent(nested, (d) => d.value.attendance))
+                    .range([0, 12]);
+
+                svg.append('g')
+                    .attr('class', 'bubble')
+                    .selectAll('circle')
+                    .data(nested.sort((a, b) => {
+                        return b.value.attendance - a.value.attendance;
+                    }))
+                    .enter()
+                    .append('circle')
+                    .attr('cx', (d) => d.value.x)
+                    .attr('cy', (d) => d.value.y)
+                    .attr('r', (d) => {
+                        return radius(d.value.attendance);
+                    })
+                    .attr('fill', 'rgb(247, 148, 32)')
+                    .attr('opacity', 0.7)
+                    .attr('stroke', 'black')
+                    .attr('stroke-width', 0.7);
             }
 
             let format = d3.timeParse("%d-%m-%Y (%H:%M h)");
