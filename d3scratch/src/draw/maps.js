@@ -16,12 +16,23 @@ export default class Maps {
     render() {
         console.log("Rendering maps in D3");
 
+        d3.select('h2')
+            .text("World Cup");
+
         d3.json(this.dataFile, (geoData) => {
-            let svg = d3.select(".maps")
+            let svg = d3.select("body")
+                .append('svg')
                 .attr("width", this.width)
                 .attr("height", this.height)
                 .append("g")
-                .attr('class', 'map');
+                .attr('class', 'maps');
+
+            let years = [];
+            for(var i=1930; i<2015; i += 4) {
+                if(i !== 1942 && i !== 1946) {
+                    years.push(i);
+                }
+            }
 
             let projection = d3.geoMercator()
                 .scale(175)         // Analogous to the zoom feature
@@ -41,6 +52,7 @@ export default class Maps {
 
             function plotPoints(data) {
                 // draw circles logic
+                // Group the data, keyed by year
                 let nested = d3.nest()
                     .key((d) => d['date'].getUTCFullYear())
                     .rollup((leaves) => {
@@ -58,14 +70,23 @@ export default class Maps {
                             return d[1];
                         });
 
+                        let teams = d3.set();
+
+                        leaves.forEach((d) => {
+                            teams.add(d.team1);
+                            teams.add(d.team2);
+                        });
+
                         return {
                             'attendance': totalAttendance,
                             'x': centerX,
-                            'y': centerY
+                            'y': centerY,
+                            'teams': teams.values()
                         };
                     })
                     .entries(data);
 
+                // Draw circles on the map representing location of the tournament, and size representing attendance
                 let radius = d3.scaleSqrt()
                     .domain(d3.extent(nested, (d) => d.value.attendance))
                     .range([0, 12]);
@@ -75,18 +96,103 @@ export default class Maps {
                     .selectAll('circle')
                     .data(nested.sort((a, b) => {
                         return b.value.attendance - a.value.attendance;
-                    }))
+                    }), (d) => {
+                        // This second accessor function of the data binding function allows you to associate keys
+                        // with the returned data sets.
+                        return d.key;
+                    })
                     .enter()
                     .append('circle')
                     .attr('cx', (d) => d.value.x)
                     .attr('cy', (d) => d.value.y)
                     .attr('r', (d) => {
                         return radius(d.value.attendance);
-                    })
-                    .attr('fill', 'rgb(247, 148, 32)')
-                    .attr('opacity', 0.7)
-                    .attr('stroke', 'black')
-                    .attr('stroke-width', 0.7);
+                    });
+
+
+                function update(year) {
+                    // Only show countries participating for the given year.
+                    d3.select('H2')
+                        .text(`World Cup ${year}`);
+
+                    // Filter for only the data points for the provided year
+                    let filtered = nested.filter((d) => {
+                        return new Date(d.key).getUTCFullYear() == year;
+                    });
+
+                    let circles = svg.selectAll('circle')
+                        .data(filtered, (d) => d.key);
+
+                    // Remove elements that are no longer applicable (since they correspond to data points no longer applicable)
+                    circles.exit().remove();
+
+                    // Add new elements (since these have just come in for this year)
+                    circles.enter()
+                        .append('circle')
+                        .transition()
+                        .duration(900)
+                        .attr('cx', (d) => d.value.x)
+                        .attr('cy', (d) => d.value.y)
+                        .attr('r', (d) => radius(d.value.attendance))
+
+                    let countries = filtered[0].value.teams;
+
+                    let updateCountries = (d) => {
+                        if (countries.indexOf(d.properties.name) !== -1) {
+                            return 'lightblue';
+                        } else {
+                            return 'white';
+                        }
+                    };
+
+                    svg.selectAll('path')
+                        .transition()
+                        .duration(900)
+                        .style('fill', updateCountries)
+                        .style('stroke', updateCountries);
+                }
+
+                let sortedNested = nested.sort((a, b) => {
+                    return a.key - b.key;
+                });
+
+                var i=0;
+                let animateInterval = setInterval(function () {
+                    update(sortedNested[i].key);
+                    i++;
+
+                    if (i >= sortedNested.length) {
+                        clearInterval(animateInterval);
+
+                        let buttons = d3.select('body')
+                            .append("div")
+                            .attr("class", 'years_buttons_container')
+                            .selectAll('div')
+                            .data(years)
+                            .enter()
+                            .append('div')
+                            .text((d) => d)
+                            .attr('class', 'year_buttons');
+
+                        buttons.on("click", function (d) {
+                            // d is the data, which in this case is the year (the data to which the button was bound to)
+                            d3.select('.years_buttons_container')
+                                .selectAll('div')
+                                .transition()
+                                .duration(500)
+                                .style('color', 'black')
+                                .style('background', 'rgb(251, 201, 127)');
+
+                            d3.select(this)
+                                .transition()
+                                .duration(900)
+                                .style('background', 'rgb(9,157,257)')
+                                .style('color', 'white');
+
+                            update(d);
+                        })
+                    }
+                }, 5);
             }
 
             let format = d3.timeParse("%d-%m-%Y (%H:%M h)");

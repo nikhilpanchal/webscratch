@@ -11,7 +11,7 @@ import Maps from './draw/maps'
 // rectangle.render();
 
 let data = [4, 8, 15, 16, 27, 40];
-let bar = new BarChart();
+// let bar = new BarChart();
 // bar.render(data);
 
 function startPeriodicUpdates() {

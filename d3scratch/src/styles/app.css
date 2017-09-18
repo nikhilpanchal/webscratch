@@ -2,6 +2,7 @@
 @import "home/basic.css";
 @import "home/hist.css";
 @import "home/world_cup.css";
+@import "home/maps.css";
 
 * {
     -webkit-box-sizing: border-box;
