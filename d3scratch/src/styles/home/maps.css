@@ -1,0 +1,13 @@
+.maps circle {
+    opacity: 0.7;
+    fill: rgb(247, 148, 32);
+    stroke: black;
+    stroke-width: 0.7;
+}
+
+.year_buttons {
+    display: inline-block;
+    margin: 4px;
+    background: rgb(251, 201, 127)
+
+}

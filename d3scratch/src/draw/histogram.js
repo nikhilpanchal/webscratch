@@ -30,7 +30,6 @@ export default class Histogram {
 
         d3.tsv("/resources/letter_frequency.txt", this.type, (error, data) => {
             this.x.domain(data.map((d) => d.name));
-            console.log(this.x.domain());
             this.y.domain([0, d3.max(data, (d) => d.value)]);
 
             this.chart.append('g')

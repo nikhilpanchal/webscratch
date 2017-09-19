@@ -21,7 +21,7 @@ export default class WorldCupGraph {
                 d['date'] = dateParser(d['date']);
                 d['attendance'] = +d['attendance'];
 
-                // Important to return the incoming, transformed row.
+                // Important to return the transformed row.
                 return d;
             },
             (data) => {
@@ -31,6 +31,7 @@ export default class WorldCupGraph {
                     .append('g')
                     .attr('class', 'chart');
 
+                // Core D3 Join
                 d3.select('.world_cup_svg')
                     .selectAll()
                     .data(data)
