@@ -11,7 +11,7 @@ const length = 50;
 const randomInt = () => Math.floor(Math.random() * 1000);
 
 const randomPoints = () => {
-    return Array.apply(null, {length: length}).map((pt) => [randomInt(), randomInt()]);
+    return Array.apply(null, {length: length}).map(() => [randomInt(), randomInt()]);
 };
 
 export default class Chart extends React.Component {
@@ -25,7 +25,7 @@ export default class Chart extends React.Component {
         this.randomize = this.randomize.bind(this);
     }
 
-    randomize(e) {
+    randomize() {
         this.setState({
             data: randomPoints()
         });

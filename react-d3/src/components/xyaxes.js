@@ -15,5 +15,5 @@ export default (props) => {
     return <g>
         <Axis {...xSettings}/>
         <Axis {...ySettings}/>
-    </g>
-}
+    </g>;
+};

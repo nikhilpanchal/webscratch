@@ -26,5 +26,5 @@ export default (props) => {
     return <svg className='graph' height={props.height} width={props.width}>
         <DataCircles {...props} {...scales} />
         <XYAxis {...props} {...scales} />
-    </svg>
-}
+    </svg>;
+};
