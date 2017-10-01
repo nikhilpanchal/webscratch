@@ -20,7 +20,7 @@ export default class Chart extends React.Component {
         super(props);
 
         this.state = {
-            buttontext: 'Run Data',
+            buttonText: 'Run Data',
             data: randomPoints()
         };
 
@@ -34,7 +34,7 @@ export default class Chart extends React.Component {
             clearInterval(this.interval);
             this.interval = undefined;
             this.setState({
-                buttontext: 'Start Data'
+                buttonText: 'Start Data'
             });
         } else {
             this.interval = setInterval(() => {
@@ -44,7 +44,7 @@ export default class Chart extends React.Component {
             }, 200);
 
             this.setState({
-                buttontext: 'Stop Data'
+                buttonText: 'Stop Data'
             });
         }
     }
