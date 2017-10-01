@@ -1,5 +1,6 @@
 import React from 'react';
 import Scatter from './scatter';
+import Button from 'react-bootstrap/lib/Button';
 
 const styles = {
     width: 500,
@@ -19,16 +20,33 @@ export default class Chart extends React.Component {
         super(props);
 
         this.state = {
+            buttontext: 'Run Data',
             data: randomPoints()
         };
 
         this.randomize = this.randomize.bind(this);
+
+        this.interval = undefined;
     }
 
     randomize() {
-        this.setState({
-            data: randomPoints()
-        });
+        if (this.interval) {
+            clearInterval(this.interval);
+            this.interval = undefined;
+            this.setState({
+                buttontext: 'Start Data'
+            });
+        } else {
+            this.interval = setInterval(() => {
+                this.setState({
+                    data: randomPoints()
+                });
+            }, 200);
+
+            this.setState({
+                buttontext: 'Stop Data'
+            });
+        }
     }
 
     render() {
@@ -40,7 +58,7 @@ export default class Chart extends React.Component {
                     <Scatter {...this.state} {...styles} />
 
                     <div>
-                        <button className='btn' onClick={this.randomize}>Randomize Data</button>
+                        <Button bsStyle='primary' onClick={this.randomize}>Randomize Data</Button>
                     </div>
                 </div>
             </div>
