@@ -1,7 +1,7 @@
 import React from 'react';
 import Axis from './axis';
 
-export default (props) => {
+const XYAxis = (props) => {
     const xSettings = {
         translate: `translate(0, ${props.height - props.padding})`,
         scale: props.xScale,
@@ -17,3 +17,5 @@ export default (props) => {
         <Axis {...ySettings}/>
     </g>;
 };
+
+export default XYAxis;
