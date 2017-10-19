@@ -1,7 +1,9 @@
 import React from 'react';
 // import Scatter from './scatter';
 import BarGraph from './bargraph';
+import EntityReturns from '../services/entity-returns';
 import Button from 'react-bootstrap/lib/Button';
+import Alert from 'react-bootstrap/lib/Alert';
 
 const styles = {
     width: 500,
@@ -32,10 +34,15 @@ export default class Chart extends React.Component {
         this.state = {
             buttonText: 'Run Data',
             // data: randomPoints()
-            data: randomBarData()
+            // data: randomBarData()
+            data: [],
+            error: {}
         };
 
+        this.serverReturns = new EntityReturns();
+
         this.randomize = this.randomize.bind(this);
+        this.retrieveData = this.retrieveData.bind(this);
 
         this.interval = undefined;
     }
@@ -60,7 +67,31 @@ export default class Chart extends React.Component {
         }
     }
 
+    retrieveData() {
+        let self = this;
+        this.serverReturns.getAccountReturnsForBuCompositeAndDateRange()
+            .then(function (data) {
+                self.setState({
+                    data: data[0],
+                    allData: data
+                });
+            })
+            .catch(function (error) {
+                self.setState({
+                    error: {
+                        message: error.message,
+                        stack: error.stack
+                    }
+                });
+            });
+    }
+
     render() {
+        let inlineStyles = {
+            padding: "20px",
+            textAlign: "left"
+        };
+
         return (
             <div>
                 <h1>Playing with React and D3</h1>
@@ -71,7 +102,14 @@ export default class Chart extends React.Component {
                     <BarGraph {...this.state} {...styles} />
 
                     <div>
-                        <Button bsStyle='primary' onClick={this.randomize}>Randomize Data</Button>
+                        <Button bsStyle='primary' onClick={this.retrieveData}>Randomize Data</Button>
+                    </div>
+
+                    <div style={inlineStyles}>
+                        <Alert bsStyle="danger">
+                            <h4>{this.state.error.message}</h4>
+                            <p>{this.state.error.stack}</p>
+                        </Alert>
                     </div>
                 </div>
             </div>
