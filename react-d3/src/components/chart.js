@@ -4,10 +4,12 @@ import BarGraph from './bargraph';
 import EntityReturns from '../services/entity-returns';
 import Button from 'react-bootstrap/lib/Button';
 import Alert from 'react-bootstrap/lib/Alert';
+import Label from 'react-bootstrap/lib/Label';
+import './chart.css';
 
 const styles = {
     width: 500,
-    height: 300,
+    height: 350,
     padding: 20
 };
 
@@ -75,7 +77,8 @@ export default class Chart extends React.Component {
         this.serverReturns.getAccountReturnsForBuCompositeAndDateRange()
             .then(function (data) {
                 self.setState({
-                    data: data[Object.keys(data)[self.state.keyIndex]],
+                    keyIndex: 0,
+                    data: data[Object.keys(data)[0]],
                     allData: data
                 });
             })
@@ -115,30 +118,32 @@ export default class Chart extends React.Component {
 
     render() {
         let inlineStyles = {
-            padding: "20px",
-            textAlign: "left"
-        };
-
-        let buttonStyles = {
-            marginRight: '10px'
+            width: styles.width
         };
 
         return (
             <div>
                 <h1>Playing with React and D3</h1>
 
-                <div>
+                <div className="container">
                     {/*<Scatter {...this.state} {...styles} />*/}
+
+                    {this.state.allData &&
+                        <div style={inlineStyles} className='datelabel'>
+                            <Label bsStyle='default'>{Object.keys(this.state.allData)[this.state.keyIndex]}</Label>
+                        </div>
+                    }
+
 
                     <BarGraph data={this.state.data} {...styles} />
 
                     <div>
-                        <Button bsStyle='primary' style={buttonStyles} onClick={this.retrieveData}>Load Data</Button>
-                        <Button bsStyle='primary' style={buttonStyles} onClick={this.showNextDateData}>Next</Button>
+                        <Button bsStyle='primary' className="button" onClick={this.retrieveData}>Load Data</Button>
+                        <Button bsStyle='primary' className="button" onClick={this.showNextDateData}>Next</Button>
                     </div>
 
                     {this.state.error.message &&
-                        <div style={inlineStyles}>
+                        <div className="alert">
                             <Alert bsStyle="warning" onDismiss={this.clearAlert}>
                                 <h4>{this.state.error.message}</h4>
                                 <p>{this.state.error.detail}</p>

@@ -1,0 +1,16 @@
+.container {
+    margin-top: 50px;
+}
+
+.button {
+    margin-right: 10px;
+}
+
+.alert {
+    padding: 20px;
+    text-align: left;
+}
+
+.datelabel {
+    text-align: right;
+}
