@@ -36,13 +36,16 @@ export default class Chart extends React.Component {
             // data: randomPoints()
             // data: randomBarData()
             data: [],
-            error: {}
+            error: {},
+            keyIndex: 0
         };
 
         this.serverReturns = new EntityReturns();
 
         this.randomize = this.randomize.bind(this);
         this.retrieveData = this.retrieveData.bind(this);
+        this.showNextDateData = this.showNextDateData.bind(this);
+        this.clearAlert = this.clearAlert.bind(this);
 
         this.interval = undefined;
     }
@@ -72,7 +75,7 @@ export default class Chart extends React.Component {
         this.serverReturns.getAccountReturnsForBuCompositeAndDateRange()
             .then(function (data) {
                 self.setState({
-                    data: data[Object.keys(data)[0]],
+                    data: data[Object.keys(data)[self.state.keyIndex]],
                     allData: data
                 });
             })
@@ -80,16 +83,44 @@ export default class Chart extends React.Component {
                 self.setState({
                     error: {
                         message: error.message,
-                        stack: error.stack
+                        detail: error.stack
                     }
                 });
             });
+    }
+
+    showNextDateData(e) {
+        let keyIndex = this.state.keyIndex + 1;
+
+        if (keyIndex >= Object.keys(this.state.allData).length) {
+            this.setState({
+                error: {
+                    message: "No more data",
+                    detail: "Cannot go next, no more data"
+                }
+            });
+        } else {
+            this.setState({
+                keyIndex: keyIndex,
+                data: this.state.allData[Object.keys(this.state.allData)[keyIndex]]
+            });
+        }
+    }
+
+    clearAlert() {
+        this.setState({
+            error: {}
+        });
     }
 
     render() {
         let inlineStyles = {
             padding: "20px",
             textAlign: "left"
+        };
+
+        let buttonStyles = {
+            marginRight: '10px'
         };
 
         return (
@@ -99,18 +130,21 @@ export default class Chart extends React.Component {
                 <div>
                     {/*<Scatter {...this.state} {...styles} />*/}
 
-                    <BarGraph {...this.state} {...styles} />
+                    <BarGraph data={this.state.data} {...styles} />
 
                     <div>
-                        <Button bsStyle='primary' onClick={this.retrieveData}>Randomize Data</Button>
+                        <Button bsStyle='primary' style={buttonStyles} onClick={this.retrieveData}>Load Data</Button>
+                        <Button bsStyle='primary' style={buttonStyles} onClick={this.showNextDateData}>Next</Button>
                     </div>
 
-                    <div style={inlineStyles}>
-                        <Alert bsStyle="warning">
-                            <h4>{this.state.error.message}</h4>
-                            <p>{this.state.error.stack}</p>
-                        </Alert>
-                    </div>
+                    {this.state.error.message &&
+                        <div style={inlineStyles}>
+                            <Alert bsStyle="warning" onDismiss={this.clearAlert}>
+                                <h4>{this.state.error.message}</h4>
+                                <p>{this.state.error.detail}</p>
+                            </Alert>
+                        </div>
+                    }
                 </div>
             </div>
         );
