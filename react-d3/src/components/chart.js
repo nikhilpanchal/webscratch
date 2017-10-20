@@ -134,7 +134,6 @@ export default class Chart extends React.Component {
                         </div>
                     }
 
-
                     <BarGraph data={this.state.data} {...styles} />
 
                     <div>
