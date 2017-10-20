@@ -8,13 +8,13 @@ const BarGraph = (props) => {
     const xScale = d3.scaleBand()
         .range([props.padding, props.width - props.padding])
         .domain(props.data.map((security) => {
-            return security.securityId;
+            return security.id;
         }));
 
     const yScale = d3.scaleLinear()
         .range([props.height - props.padding, props.padding])
         .domain([0, d3.max(props.data, (security) => {
-            return security.rorDaily;
+            return security.ror;
         })]);
 
     const scales = {xScale, yScale};

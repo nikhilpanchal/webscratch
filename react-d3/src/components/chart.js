@@ -72,7 +72,7 @@ export default class Chart extends React.Component {
         this.serverReturns.getAccountReturnsForBuCompositeAndDateRange()
             .then(function (data) {
                 self.setState({
-                    data: data[0],
+                    data: data[Object.keys(data)[0]],
                     allData: data
                 });
             })
@@ -106,7 +106,7 @@ export default class Chart extends React.Component {
                     </div>
 
                     <div style={inlineStyles}>
-                        <Alert bsStyle="danger">
+                        <Alert bsStyle="warning">
                             <h4>{this.state.error.message}</h4>
                             <p>{this.state.error.stack}</p>
                         </Alert>
