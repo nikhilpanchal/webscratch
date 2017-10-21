@@ -8,7 +8,7 @@ import Label from 'react-bootstrap/lib/Label';
 import './chart.css';
 
 const styles = {
-    width: 500,
+    width: 1200,
     height: 350,
     padding: 20
 };
@@ -126,6 +126,15 @@ export default class Chart extends React.Component {
                 <h1>Playing with React and D3</h1>
 
                 <div className="container">
+                    {this.state.error.message &&
+                        <div className="alert">
+                            <Alert bsStyle="warning" onDismiss={this.clearAlert}>
+                                <h4>{this.state.error.message}</h4>
+                                <p>{this.state.error.detail}</p>
+                            </Alert>
+                        </div>
+                    }
+
                     {/*<Scatter {...this.state} {...styles} />*/}
 
                     {this.state.allData &&
@@ -141,14 +150,6 @@ export default class Chart extends React.Component {
                         <Button bsStyle='primary' className="button" onClick={this.showNextDateData}>Next</Button>
                     </div>
 
-                    {this.state.error.message &&
-                        <div className="alert">
-                            <Alert bsStyle="warning" onDismiss={this.clearAlert}>
-                                <h4>{this.state.error.message}</h4>
-                                <p>{this.state.error.detail}</p>
-                            </Alert>
-                        </div>
-                    }
                 </div>
             </div>
         );
