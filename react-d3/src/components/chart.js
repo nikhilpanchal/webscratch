@@ -39,7 +39,8 @@ export default class Chart extends React.Component {
             // data: randomBarData()
             data: [],
             error: {},
-            keyIndex: 0
+            keyIndex: 0,
+            showGraph: false
         };
 
         this.serverReturns = new EntityReturns();
@@ -47,6 +48,7 @@ export default class Chart extends React.Component {
         this.randomize = this.randomize.bind(this);
         this.retrieveData = this.retrieveData.bind(this);
         this.showNextDateData = this.showNextDateData.bind(this);
+        this.playAnimation = this.playAnimation.bind(this);
         this.clearAlert = this.clearAlert.bind(this);
 
         this.interval = undefined;
@@ -73,14 +75,18 @@ export default class Chart extends React.Component {
     }
 
     retrieveData() {
+        console.log(`${new Date()}: Retrieving Data`);
         let self = this;
         this.serverReturns.getAccountReturnsForBuCompositeAndDateRange()
             .then(function (data) {
                 self.setState({
                     keyIndex: 0,
                     data: data[Object.keys(data)[0]],
-                    allData: data
+                    allData: data,
+                    showGraph: true
                 });
+
+                console.log(`${new Date()}: Showing the Graph`);
             })
             .catch(function (error) {
                 self.setState({
@@ -108,6 +114,25 @@ export default class Chart extends React.Component {
                 data: this.state.allData[Object.keys(this.state.allData)[keyIndex]]
             });
         }
+    }
+
+    playAnimation(e) {
+        this.setState({
+            keyIndex: 0
+        });
+
+        let animation = setInterval(() => {
+            let keyIndex = this.state.keyIndex + 1;
+
+            this.setState({
+                keyIndex: keyIndex,
+                data: this.state.allData[Object.keys(this.state.allData)[keyIndex]]
+            });
+
+            if (keyIndex+1 >= Object.keys(this.state.allData).length) {
+                clearInterval(animation);
+            }
+        }, 2000);
     }
 
     clearAlert() {
@@ -143,11 +168,11 @@ export default class Chart extends React.Component {
                         </div>
                     }
 
-                    <BarGraph data={this.state.data} {...styles} />
+                    <BarGraph data={this.state.data} {...styles} in={this.state.showGraph}/>
 
                     <div>
                         <Button bsStyle='primary' className="button" onClick={this.retrieveData}>Load Data</Button>
-                        <Button bsStyle='primary' className="button" onClick={this.showNextDateData}>Next</Button>
+                        <Button bsStyle='primary' className="button" onClick={this.playAnimation}>Play</Button>
                     </div>
 
                 </div>
