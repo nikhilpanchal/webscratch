@@ -46,7 +46,7 @@ export default class Chart extends React.Component {
         this.serverReturns = new EntityReturns();
 
         this.randomize = this.randomize.bind(this);
-        this.retrieveData = this.retrieveData.bind(this);
+        this.toggleData = this.toggleData.bind(this);
         this.showNextDateData = this.showNextDateData.bind(this);
         this.playAnimation = this.playAnimation.bind(this);
         this.clearAlert = this.clearAlert.bind(this);
@@ -74,8 +74,17 @@ export default class Chart extends React.Component {
         }
     }
 
-    retrieveData() {
-        console.log(`${new Date()}: Retrieving Data`);
+    toggleData() {
+        if (this.state.data.length) {
+            // Remove the data if it exists
+            this.setState({
+                data: [],
+                showGraph: false
+            });
+
+            return;
+        }
+
         let self = this;
         this.serverReturns.getAccountReturnsForBuCompositeAndDateRange()
             .then(function (data) {
@@ -162,16 +171,18 @@ export default class Chart extends React.Component {
 
                     {/*<Scatter {...this.state} {...styles} />*/}
 
-                    {this.state.allData &&
-                        <div style={inlineStyles} className='datelabel'>
-                            <Label bsStyle='default'>{Object.keys(this.state.allData)[this.state.keyIndex]}</Label>
-                        </div>
-                    }
+                    <div style={inlineStyles} className='datelabel'>
+                        <Label bsStyle='default'>{this.state.allData ?
+                            Object.keys(this.state.allData)[this.state.keyIndex]
+                        : new Date().toLocaleDateString()}</Label>
+                    </div>
 
-                    <BarGraph data={this.state.data} {...styles} in={this.state.showGraph}/>
+                    <BarGraph data={this.state.data} {...styles}/>
 
                     <div>
-                        <Button bsStyle='primary' className="button" onClick={this.retrieveData}>Load Data</Button>
+                        <Button bsStyle='primary' className="button" onClick={this.toggleData}>
+                            {this.state.data.length ? "Hide Data" : "Load Data"}
+                        </Button>
                         <Button bsStyle='primary' className="button" onClick={this.playAnimation}>Play</Button>
                     </div>
 
