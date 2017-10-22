@@ -174,7 +174,7 @@ export default class Chart extends React.Component {
                         : new Date().toLocaleDateString()}</Label>
                     </div>
 
-                    <BarGraph data={this.state.data} {...styles}/>
+                    <BarGraph data={this.state.data} index={this.state.keyIndex} {...styles}/>
 
                     <div>
                         <Button bsStyle='primary' className="button" onClick={this.toggleData}>

@@ -2,6 +2,7 @@ import React from 'react';
 import * as d3 from 'd3';
 import Bar from "./bar";
 import XYAxis from "./xyaxes";
+import TimeLine from "./time-line";
 
 
 const BarGraph = (props) => {
@@ -28,8 +29,9 @@ const BarGraph = (props) => {
     return (
         <svg style={{...style, opacity: props.data.length ? 1:0}} height={props.height} width={props.width}>
             {props.data.map((security, index) => {
-                return <Bar {...scales} height={props.height - props.padding} security={security} key={index} />;
+                return <Bar {...scales} height={props.height - props.padding} security={security} key={index}/>;
             })}
+            <TimeLine index={props.index}/>
             <XYAxis {...scales} {...props} />
         </svg>
     );
