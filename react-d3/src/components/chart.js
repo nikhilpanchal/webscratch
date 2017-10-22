@@ -39,8 +39,7 @@ export default class Chart extends React.Component {
             // data: randomBarData()
             data: [],
             error: {},
-            keyIndex: 0,
-            showGraph: false
+            keyIndex: 0
         };
 
         this.serverReturns = new EntityReturns();
@@ -78,8 +77,7 @@ export default class Chart extends React.Component {
         if (this.state.data.length) {
             // Remove the data if it exists
             this.setState({
-                data: [],
-                showGraph: false
+                data: []
             });
 
             return;
@@ -91,8 +89,7 @@ export default class Chart extends React.Component {
                 self.setState({
                     keyIndex: 0,
                     data: data[Object.keys(data)[0]],
-                    allData: data,
-                    showGraph: true
+                    allData: data
                 });
 
                 console.log(`${new Date()}: Showing the Graph`);
@@ -172,7 +169,7 @@ export default class Chart extends React.Component {
                     {/*<Scatter {...this.state} {...styles} />*/}
 
                     <div style={inlineStyles} className='datelabel'>
-                        <Label bsStyle='default'>{this.state.allData ?
+                        <Label bsStyle='default'>{this.state.data.length ?
                             Object.keys(this.state.allData)[this.state.keyIndex]
                         : new Date().toLocaleDateString()}</Label>
                     </div>
@@ -184,6 +181,7 @@ export default class Chart extends React.Component {
                             {this.state.data.length ? "Hide Data" : "Load Data"}
                         </Button>
                         <Button bsStyle='primary' className="button" onClick={this.playAnimation}>Play</Button>
+                        <Button bsStyle='primary' className="button" onClick={this.showNextDateData}>Next</Button>
                     </div>
 
                 </div>
