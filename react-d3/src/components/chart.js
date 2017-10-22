@@ -8,10 +8,12 @@ import Label from 'react-bootstrap/lib/Label';
 import './chart.css';
 
 const styles = {
-    width: 1200,
+    width: 600,
     height: 350,
     padding: 20
 };
+
+const animationInterval = 1000;
 
 const length = 50;
 const randomInt = () => Math.floor(Math.random() * 1000);
@@ -39,7 +41,8 @@ export default class Chart extends React.Component {
             // data: randomBarData()
             data: [],
             error: {},
-            keyIndex: 0
+            keyIndex: 0,
+            allData: {}
         };
 
         this.serverReturns = new EntityReturns();
@@ -123,9 +126,11 @@ export default class Chart extends React.Component {
     }
 
     playAnimation(e) {
-        this.setState({
-            keyIndex: 0
-        });
+        if (this.state.keyIndex+1 >= Object.keys(this.state.allData).length) {
+            this.setState({
+                keyIndex: 0
+            });
+        }
 
         let animation = setInterval(() => {
             let keyIndex = this.state.keyIndex + 1;
@@ -138,7 +143,7 @@ export default class Chart extends React.Component {
             if (keyIndex+1 >= Object.keys(this.state.allData).length) {
                 clearInterval(animation);
             }
-        }, 2000);
+        }, animationInterval);
     }
 
     clearAlert() {
@@ -147,10 +152,14 @@ export default class Chart extends React.Component {
         });
     }
 
+    dates;
+
     render() {
         let inlineStyles = {
             width: styles.width
         };
+
+        let dates = Object.keys(this.state.allData);
 
         return (
             <div>
@@ -170,11 +179,11 @@ export default class Chart extends React.Component {
 
                     <div style={inlineStyles} className='datelabel'>
                         <Label bsStyle='default'>{this.state.data.length ?
-                            Object.keys(this.state.allData)[this.state.keyIndex]
+                            dates[this.state.keyIndex]
                         : new Date().toLocaleDateString()}</Label>
                     </div>
 
-                    <BarGraph data={this.state.data} index={this.state.keyIndex} {...styles}/>
+                    <BarGraph data={this.state.data} dates={dates} index={this.state.keyIndex} {...styles}/>
 
                     <div>
                         <Button bsStyle='primary' className="button" onClick={this.toggleData}>

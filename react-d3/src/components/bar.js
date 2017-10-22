@@ -13,11 +13,11 @@ export default class Bar extends React.Component {
     }
 
     componentWillUnmount() {
-        console.log(`Component ${this.props.key} unmount`);
+        console.log(`Component unmount`);
     }
 
     componentDidMount() {
-        console.log(`Component ${this.props.key} did mount`);
+        console.log(`Component did mount`);
     }
 
     componentWillReceiveProps() {
@@ -25,7 +25,7 @@ export default class Bar extends React.Component {
             opacity: 0,
             transition: 'opacity 50ms'
         });
-        console.log(`Component ${this.props.key} will receive props`);
+        console.log(`Component will receive props`);
 
         setTimeout(() => {
             this.setState({

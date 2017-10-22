@@ -24,6 +24,10 @@ const BarGraph = (props) => {
             return security.ror;
         })]);
 
+    const timeXScale = d3.scaleBand()
+        .range([props.padding, props.width - props.padding])
+        .domain(props.dates);
+
     const scales = {xScale, yScale};
 
     return (
@@ -31,7 +35,7 @@ const BarGraph = (props) => {
             {props.data.map((security, index) => {
                 return <Bar {...scales} height={props.height - props.padding} security={security} key={index}/>;
             })}
-            <TimeLine index={props.index}/>
+            <TimeLine date={props.dates[props.index]} scale={timeXScale}/>
             <XYAxis {...scales} {...props} />
         </svg>
     );

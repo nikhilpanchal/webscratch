@@ -1,10 +1,19 @@
 import React from 'react';
 
+export default class TimeLine extends React.Component {
+    constructor(props) {
+        super(props);
+    }
 
-export default (props) => {
-    let x = 30 + props.index*30;
-    let translate = `translate(${x})`;
+    render() {
+        let x = this.props.scale ? this.props.scale(this.props.date): 20;
 
-
-    return <line x1='40' y1='20' x2='40' y2='330' strokeWidth='2' stroke='black' transform={translate}></line>;
-};
+        return <line x1={x}
+                     y1='5'
+                     x2={x}
+                     y2='330'
+                     strokeWidth='2'
+                     stroke='black'
+        ></line>;
+    }
+}
