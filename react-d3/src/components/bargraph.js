@@ -37,6 +37,7 @@ const BarGraph = (props) => {
                             height={props.height - props.padding}
                             entity={security}
                             clickHandler={props.barClickHandler}
+                            hoverHandler={props.barHoverHandler}
                             key={index}/>;
             })}
             <TimeLine date={props.dates[props.index]} scale={timeXScale}/>

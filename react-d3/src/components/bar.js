@@ -12,6 +12,8 @@ export default class Bar extends React.Component {
         };
 
         this.handleClick = this.handleClick.bind(this);
+        this.handleHover = this.handleHover.bind(this);
+        this.handleHoverOut = this.handleHoverOut.bind(this);
         this.getEntityType = this.getEntityType.bind(this);
     }
 
@@ -24,18 +26,18 @@ export default class Bar extends React.Component {
     }
 
     componentWillReceiveProps() {
-        this.setState({
-            opacity: 0,
-            transition: 'opacity 50ms'
-        });
-        console.log(`Component will receive props`);
-
-        setTimeout(() => {
-            this.setState({
-                opacity: 1,
-                transition: 'opacity 950ms'
-            });
-        }, 0);
+        // this.setState({
+        //     opacity: 0,
+        //     transition: 'opacity 50ms'
+        // });
+        // console.log(`Component will receive props`);
+        //
+        // setTimeout(() => {
+        //     this.setState({
+        //         opacity: 1,
+        //         transition: 'opacity 950ms'
+        //     });
+        // }, 0);
     }
 
     getEntityType(id) {
@@ -44,6 +46,14 @@ export default class Bar extends React.Component {
 
     handleClick(e) {
         this.props.clickHandler(this.props.entity.id, this.getEntityType(this.props.entity.id));
+    }
+
+    handleHover(e) {
+        this.props.hoverHandler(this.props.entity, e, true);
+    }
+
+    handleHoverOut(e) {
+        this.props.hoverHandler(this.props.entity, e, false);
     }
 
     render() {
@@ -58,6 +68,8 @@ export default class Bar extends React.Component {
                      width={this.props.xScale.bandwidth()}
                      height={this.props.height - this.props.yScale(this.props.entity.ror)}
                      onClick={this.handleClick}
+                     onMouseOver={this.handleHover}
+                     onMouseOut={this.handleHoverOut}
         />;
     };
 }

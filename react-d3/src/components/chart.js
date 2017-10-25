@@ -42,7 +42,16 @@ export default class Chart extends React.Component {
             data: [],
             error: {},
             keyIndex: 0,
-            allData: {}
+            allData: {},
+            toolTip: {
+                visible: false,
+                id: 'test',
+                ror: 0,
+                position: {
+                    top: 50,
+                    left: 50
+                }
+            }
         };
 
         this.serverReturns = new EntityReturns();
@@ -53,6 +62,7 @@ export default class Chart extends React.Component {
         this.playAnimation = this.playAnimation.bind(this);
         this.clearAlert = this.clearAlert.bind(this);
         this.barclick = this.barclick.bind(this);
+        this.barhover = this.barhover.bind(this);
 
         this.interval = undefined;
 
@@ -163,12 +173,17 @@ export default class Chart extends React.Component {
             let self = this;
             this.serverReturns.getSecurityReturnsForBuAccountAndDateRange()
                 .then(function (data) {
-                    self.setState({
-                        keyIndex: 0,
-                        data: data[Object.keys(data)[0]],
-                        allData: data,
-                        nowShowing: 'securities'
-                    });
+                    // Slight Hack: Need to wait > the bargraph opacity transition duration to allow the animation
+                    // effect to kick in. Apparently if you set the opacity to 0 and back to 1 within the duration
+                    // time limit, you won't see any transition (animation) effect.
+                    setTimeout(() => {
+                        self.setState({
+                            keyIndex: 0,
+                            data: data[Object.keys(data)[0]],
+                            allData: data,
+                            nowShowing: 'securities'
+                        });
+                    }, 600);
 
                     console.log(`${new Date()}: Showing the Graph`);
                 })
@@ -180,8 +195,39 @@ export default class Chart extends React.Component {
                         }
                     });
                 });
+
+            this.setState({
+                data: []
+            });
         }
     }
+
+    barhover(entity, e, isHoverIn) {
+        console.log(`Hover over entity ${entity.id}`);
+
+        if (isHoverIn) {
+            this.setState({
+                toolTip: {
+                    visible: true,
+                    position: {
+                        left: e.pageX,
+                        top: e.pageY
+                    },
+                    id: entity.id,
+                    ror: entity.ror
+                }
+            });
+        } else {
+            let toolTip = Object.assign({}, this.state.toolTip, {
+                visible: false
+            });
+
+            this.setState({
+                toolTip
+            });
+        }
+    }
+
 
     render() {
         let inlineStyles = {
@@ -216,6 +262,7 @@ export default class Chart extends React.Component {
                               dates={dates}
                               index={this.state.keyIndex}
                               barClickHandler={this.barclick}
+                              barHoverHandler={this.barhover}
                               {...styles}/>
 
                     <div>
@@ -226,6 +273,14 @@ export default class Chart extends React.Component {
                         <Button bsStyle='primary' className="button" onClick={this.showNextDateData}>Next</Button>
                     </div>
 
+                </div>
+
+                <div className="tooltip" style={{
+                    opacity: this.state.toolTip.visible ? 1 : 0,
+                    top: this.state.toolTip.position.top - 20,
+                    left: this.state.toolTip.position.left + 10
+                }}>
+                    <div>{this.state.toolTip.id}: {this.state.toolTip.ror}</div>
                 </div>
             </div>
         );
