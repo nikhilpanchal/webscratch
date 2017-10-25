@@ -2,10 +2,7 @@ import axios from 'axios';
 
 export default class EntityReturns {
 
-    getAccountReturnsForBuCompositeAndDateRange(bu, composite, from, to) {
-        let url = `/data/performance/composite-accounts.json`;
-        // let url = `/data/performance/composite-accounts.json&bu=${bu}&comp=${composite}&from=${from}&to=${to}`;
-
+    getEntityReturns(url) {
         return axios.get(url)
             .then(function (response) {
                 return response.data;
@@ -15,5 +12,18 @@ export default class EntityReturns {
 
                 throw error;
             });
+    }
+
+    getAccountReturnsForBuCompositeAndDateRange(bu, composite, from, to) {
+        let url = `/data/performance/composite-accounts.json`;
+        // let url = `/data/performance/composite-accounts.json&bu=${bu}&comp=${composite}&from=${from}&to=${to}`;
+
+        return this.getEntityReturns(url);
+    }
+
+    getSecurityReturnsForBuAccountAndDateRange() {
+        let url = `/data/performance/account-securities.json`;
+
+        return this.getEntityReturns(url);
     }
 }

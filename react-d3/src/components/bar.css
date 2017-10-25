@@ -1,7 +1,15 @@
-.bar {
+.bar-account {
     fill: steelblue;
 }
 
-.bar:hover {
+.bar-account:hover {
     fill: orange;
+}
+
+.bar-security {
+    fill: green;
+}
+
+.bar-security:hover {
+    fill: red;
 }

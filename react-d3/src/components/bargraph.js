@@ -33,7 +33,11 @@ const BarGraph = (props) => {
     return (
         <svg style={{...style, opacity: props.data.length ? 1:0}} height={props.height} width={props.width}>
             {props.data.map((security, index) => {
-                return <Bar {...scales} height={props.height - props.padding} security={security} key={index}/>;
+                return <Bar {...scales}
+                            height={props.height - props.padding}
+                            entity={security}
+                            clickHandler={props.barClickHandler}
+                            key={index}/>;
             })}
             <TimeLine date={props.dates[props.index]} scale={timeXScale}/>
             <XYAxis {...scales} {...props} />

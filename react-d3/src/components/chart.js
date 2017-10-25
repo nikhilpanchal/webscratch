@@ -8,7 +8,7 @@ import Label from 'react-bootstrap/lib/Label';
 import './chart.css';
 
 const styles = {
-    width: 600,
+    width: 1200,
     height: 350,
     padding: 20
 };
@@ -26,7 +26,7 @@ const randomBarData = () => {
     return Array.apply(null, {length: length}).map((el, index) => {
         return {
             securityId: `sec${index}`,
-            rorDaily: (Math.random()*100).toFixed(4)
+            rorDaily: (Math.random() * 100).toFixed(4)
         };
     });
 };
@@ -52,8 +52,11 @@ export default class Chart extends React.Component {
         this.showNextDateData = this.showNextDateData.bind(this);
         this.playAnimation = this.playAnimation.bind(this);
         this.clearAlert = this.clearAlert.bind(this);
+        this.barclick = this.barclick.bind(this);
 
         this.interval = undefined;
+
+        this.toggleData();
     }
 
     randomize() {
@@ -92,7 +95,8 @@ export default class Chart extends React.Component {
                 self.setState({
                     keyIndex: 0,
                     data: data[Object.keys(data)[0]],
-                    allData: data
+                    allData: data,
+                    nowShowing: 'accounts'
                 });
 
                 console.log(`${new Date()}: Showing the Graph`);
@@ -126,7 +130,7 @@ export default class Chart extends React.Component {
     }
 
     playAnimation(e) {
-        if (this.state.keyIndex+1 >= Object.keys(this.state.allData).length) {
+        if (this.state.keyIndex + 1 >= Object.keys(this.state.allData).length) {
             this.setState({
                 keyIndex: 0
             });
@@ -140,7 +144,7 @@ export default class Chart extends React.Component {
                 data: this.state.allData[Object.keys(this.state.allData)[keyIndex]]
             });
 
-            if (keyIndex+1 >= Object.keys(this.state.allData).length) {
+            if (keyIndex + 1 >= Object.keys(this.state.allData).length) {
                 clearInterval(animation);
             }
         }, animationInterval);
@@ -152,7 +156,32 @@ export default class Chart extends React.Component {
         });
     }
 
-    dates;
+    barclick(id, type) {
+        console.log(`Bar clicked with id: ${id} and type: ${type}`);
+
+        if (type == 'account') {
+            let self = this;
+            this.serverReturns.getSecurityReturnsForBuAccountAndDateRange()
+                .then(function (data) {
+                    self.setState({
+                        keyIndex: 0,
+                        data: data[Object.keys(data)[0]],
+                        allData: data,
+                        nowShowing: 'securities'
+                    });
+
+                    console.log(`${new Date()}: Showing the Graph`);
+                })
+                .catch(function (error) {
+                    self.setState({
+                        error: {
+                            message: error.message,
+                            detail: error.stack
+                        }
+                    });
+                });
+        }
+    }
 
     render() {
         let inlineStyles = {
@@ -167,12 +196,12 @@ export default class Chart extends React.Component {
 
                 <div className="container">
                     {this.state.error.message &&
-                        <div className="alert">
-                            <Alert bsStyle="warning" onDismiss={this.clearAlert}>
-                                <h4>{this.state.error.message}</h4>
-                                <p>{this.state.error.detail}</p>
-                            </Alert>
-                        </div>
+                    <div className="alert">
+                        <Alert bsStyle="warning" onDismiss={this.clearAlert}>
+                            <h4>{this.state.error.message}</h4>
+                            <p>{this.state.error.detail}</p>
+                        </Alert>
+                    </div>
                     }
 
                     {/*<Scatter {...this.state} {...styles} />*/}
@@ -180,10 +209,14 @@ export default class Chart extends React.Component {
                     <div style={inlineStyles} className='datelabel'>
                         <Label bsStyle='default'>{this.state.data.length ?
                             dates[this.state.keyIndex]
-                        : new Date().toLocaleDateString()}</Label>
+                            : new Date().toLocaleDateString()}</Label>
                     </div>
 
-                    <BarGraph data={this.state.data} dates={dates} index={this.state.keyIndex} {...styles}/>
+                    <BarGraph data={this.state.data}
+                              dates={dates}
+                              index={this.state.keyIndex}
+                              barClickHandler={this.barclick}
+                              {...styles}/>
 
                     <div>
                         <Button bsStyle='primary' className="button" onClick={this.toggleData}>
