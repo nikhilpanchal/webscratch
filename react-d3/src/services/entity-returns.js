@@ -26,4 +26,10 @@ export default class EntityReturns {
 
         return this.getEntityReturns(url);
     }
+
+    getSecurityReturnsForDateRange() {
+        let url = `/data/performance/security-returns.json`;
+
+        return this.getEntityReturns(url);
+    }
 }
