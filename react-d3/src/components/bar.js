@@ -18,11 +18,9 @@ export default class Bar extends React.Component {
     }
 
     componentWillUnmount() {
-        console.log(`Component unmount`);
     }
 
     componentDidMount() {
-        console.log(`Component did mount`);
     }
 
     componentWillReceiveProps() {

@@ -21,7 +21,7 @@ const BarGraph = (props) => {
     const yScale = d3.scaleLinear()
         .range([props.height - props.padding, props.padding])
         .domain([0, d3.max(props.data, (security) => {
-            return security.ror;
+            return +security.ror;
         })]);
 
     const timeXScale = d3.scaleBand()

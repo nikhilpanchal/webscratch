@@ -6,6 +6,7 @@ import Button from 'react-bootstrap/lib/Button';
 import Alert from 'react-bootstrap/lib/Alert';
 import Label from 'react-bootstrap/lib/Label';
 import './chart.css';
+import LineChart from './linechart';
 
 const styles = {
     width: 1200,
@@ -51,7 +52,8 @@ export default class Chart extends React.Component {
                     top: 50,
                     left: 50
                 }
-            }
+            },
+            allSecurityData: {}
         };
 
         this.serverReturns = new EntityReturns();
@@ -167,10 +169,9 @@ export default class Chart extends React.Component {
     }
 
     barclick(id, type) {
-        console.log(`Bar clicked with id: ${id} and type: ${type}`);
+        let self = this;
 
         if (type == 'account') {
-            let self = this;
             this.serverReturns.getSecurityReturnsForBuAccountAndDateRange()
                 .then(function (data) {
                     // Slight Hack: Need to wait > the bargraph opacity transition duration to allow the animation
@@ -199,12 +200,39 @@ export default class Chart extends React.Component {
             this.setState({
                 data: []
             });
+        } else if (type == 'security') {
+            if (Object.entries(this.state.allSecurityData).length === 0) {
+                this.serverReturns.getSecurityReturnsForDateRange()
+                    .then(function (data) {
+                        self.setState({
+                            data: data[id],
+                            nowShowing: 'securityReturns',
+                            allSecurityData: data
+                        });
+                    })
+                    .catch(function (error) {
+                        self.setState({
+                            error: {
+                                message: error.message,
+                                detail: error.stack
+                            }
+                        });
+                    });
+            } else {
+                this.setState({
+                    data: this.state.allSecurityData[id],
+                    nowShowing: 'securityReturns'
+                });
+            }
         }
+
+        // Get rid of any tooltip
+        this.setState({
+            toolTip: undefined
+        });
     }
 
     barhover(entity, e, isHoverIn) {
-        console.log(`Hover over entity ${entity.id}`);
-
         if (isHoverIn) {
             this.setState({
                 toolTip: {
@@ -258,13 +286,18 @@ export default class Chart extends React.Component {
                             : new Date().toLocaleDateString()}</Label>
                     </div>
 
-                    <BarGraph data={this.state.data}
-                              dates={dates}
-                              index={this.state.keyIndex}
-                              barClickHandler={this.barclick}
-                              barHoverHandler={this.barhover}
-                              {...styles}/>
-
+                    {
+                        this.state.nowShowing === 'securityReturns' ? (
+                            <LineChart data={this.state.data}
+                                       {...styles}/>
+                        ) : ( <BarGraph data={this.state.data}
+                                        dates={dates}
+                                        index={this.state.keyIndex}
+                                        barClickHandler={this.barclick}
+                                        barHoverHandler={this.barhover}
+                                        {...styles}/>
+                        )
+                    }
                     <div>
                         <Button bsStyle='primary' className="button" onClick={this.toggleData}>
                             {this.state.data.length ? "Hide Data" : "Load Data"}
@@ -275,13 +308,15 @@ export default class Chart extends React.Component {
 
                 </div>
 
-                <div className="tooltip" style={{
-                    opacity: this.state.toolTip.visible ? 1 : 0,
-                    top: this.state.toolTip.position.top - 20,
-                    left: this.state.toolTip.position.left + 10
-                }}>
-                    <div>{this.state.toolTip.id}: {this.state.toolTip.ror}</div>
-                </div>
+                {this.state.toolTip &&
+                    <div className="tooltip" style={{
+                        opacity: this.state.toolTip.visible ? 1 : 0,
+                        top: this.state.toolTip.position.top - 20,
+                        left: this.state.toolTip.position.left + 10
+                    }}>
+                        <div>{this.state.toolTip.id}: {this.state.toolTip.ror}</div>
+                    </div>
+                }
             </div>
         );
     }

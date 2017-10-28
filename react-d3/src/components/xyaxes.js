@@ -2,6 +2,8 @@ import React from 'react';
 import Axis from './axis';
 
 const XYAxis = (props) => {
+    console.log(`Props called with ${JSON.stringify(props)}`);
+
     const xSettings = {
         translate: `translate(0, ${props.height - props.padding})`,
         scale: props.xScale,
