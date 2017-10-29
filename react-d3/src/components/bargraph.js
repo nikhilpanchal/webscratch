@@ -5,47 +5,55 @@ import XYAxis from "./xyaxes";
 import TimeLine from "./time-line";
 
 
-const BarGraph = (props) => {
-    const duration = 500;
-    const style = {
-        transition: `opacity ${duration}ms ease-in-out`,
-        opacity: 0
-    };
+export default class BarGraph extends React.Component {
 
-    const xScale = d3.scaleBand()
-        .range([props.padding, props.width - props.padding])
-        .domain(props.data.map((security) => {
-            return security.id;
-        }));
+    shouldComponentUpdate(nextProps) {
+        return (this.props.data !== nextProps.data);
+    }
 
-    const yScale = d3.scaleLinear()
-        .range([props.height - props.padding, props.padding])
-        .domain([0, d3.max(props.data, (security) => {
-            return +security.ror;
-        })]);
+    render() {
+        const duration = 500;
+        const style = {
+            transition: `opacity ${duration}ms`,
+            opacity: 0
+        };
 
-    const timeXScale = d3.scaleBand()
-        .range([props.padding, props.width - props.padding])
-        .domain(props.dates);
+        const xScale = d3.scaleBand()
+            .range([this.props.padding, this.props.width - this.props.padding])
+            .domain(this.props.data.map((security) => {
+                return security.id;
+            }));
 
-    const scales = {xScale, yScale};
+        const yScale = d3.scaleLinear()
+            .range([this.props.height - this.props.padding, this.props.padding])
+            .domain([0, d3.max(this.props.data, (security) => {
+                return +security.ror;
+            })]);
 
-    return (
-        <svg style={{...style, opacity: props.data.length ? 1 : 0}} height={props.height} width={props.width}>
-            {props.data.map((security, index) => {
-                return <Bar {...scales}
-                            height={props.height - props.padding}
-                            entity={security}
-                            clickHandler={props.barClickHandler}
-                            hoverHandler={props.barHoverHandler}
-                            key={index}/>;
-            })}
-            {/*<TimeLine date={props.dates[props.index]} scale={timeXScale}/>*/}
-            {props.data.length &&
-                <XYAxis {...scales} {...props} />
-            }
-        </svg>
-    );
+        const timeXScale = d3.scaleBand()
+            .range([this.props.padding, this.props.width - this.props.padding])
+            .domain(this.props.dates);
+
+        const scales = {xScale, yScale};
+
+        return (
+            <svg style={{...style, opacity: this.props.data.length ? 1 : 0}} height={this.props.height}
+                 width={this.props.width}>
+                {this.props.data.map((security, index) => {
+                    return <Bar {...scales}
+                                height={this.props.height - this.props.padding}
+                                entity={security}
+                                clickHandler={this.props.barClickHandler}
+                                hoverHandler={this.props.barHoverHandler}
+                                key={index}/>;
+                })}
+
+                <TimeLine date={this.props.dates[this.props.index]} scale={timeXScale}/>
+
+                {this.props.data.length &&
+                    <XYAxis {...scales} {...this.props} />
+                }
+            </svg>
+        );
+    }
 };
-
-export default BarGraph;
