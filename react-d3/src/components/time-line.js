@@ -1,10 +1,6 @@
 import React from 'react';
 
 export default class TimeLine extends React.Component {
-    constructor(props) {
-        super(props);
-    }
-
     render() {
         let x = this.props.scale ? this.props.scale(this.props.date): 20;
 

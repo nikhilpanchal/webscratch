@@ -17,25 +17,18 @@ export default class Bar extends React.Component {
         this.getEntityType = this.getEntityType.bind(this);
     }
 
-    componentWillUnmount() {
-    }
-
-    componentDidMount() {
-    }
-
     componentWillReceiveProps() {
-        // this.setState({
-        //     opacity: 0,
-        //     transition: 'opacity 50ms'
-        // });
-        // console.log(`Component will receive props`);
-        //
-        // setTimeout(() => {
-        //     this.setState({
-        //         opacity: 1,
-        //         transition: 'opacity 950ms'
-        //     });
-        // }, 0);
+        this.setState({
+            opacity: 0,
+            transition: 'opacity 50ms'
+        });
+
+        setTimeout(() => {
+            this.setState({
+                opacity: 1,
+                transition: 'opacity 450ms'
+            });
+        }, 0);
     }
 
     getEntityType(id) {

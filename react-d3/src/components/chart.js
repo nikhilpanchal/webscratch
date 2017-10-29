@@ -110,8 +110,6 @@ export default class Chart extends React.Component {
                     allData: data,
                     nowShowing: 'accounts'
                 });
-
-                console.log(`${new Date()}: Showing the Graph`);
             })
             .catch(function (error) {
                 self.setState({
@@ -185,8 +183,6 @@ export default class Chart extends React.Component {
                             nowShowing: 'securities'
                         });
                     }, 600);
-
-                    console.log(`${new Date()}: Showing the Graph`);
                 })
                 .catch(function (error) {
                     self.setState({
