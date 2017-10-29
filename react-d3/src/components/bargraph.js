@@ -31,7 +31,7 @@ const BarGraph = (props) => {
     const scales = {xScale, yScale};
 
     return (
-        <svg style={{...style, opacity: props.data.length ? 1:0}} height={props.height} width={props.width}>
+        <svg style={{...style, opacity: props.data.length ? 1 : 0}} height={props.height} width={props.width}>
             {props.data.map((security, index) => {
                 return <Bar {...scales}
                             height={props.height - props.padding}
@@ -40,8 +40,10 @@ const BarGraph = (props) => {
                             hoverHandler={props.barHoverHandler}
                             key={index}/>;
             })}
-            <TimeLine date={props.dates[props.index]} scale={timeXScale}/>
-            <XYAxis {...scales} {...props} />
+            {/*<TimeLine date={props.dates[props.index]} scale={timeXScale}/>*/}
+            {props.data.length &&
+                <XYAxis {...scales} {...props} />
+            }
         </svg>
     );
 };
