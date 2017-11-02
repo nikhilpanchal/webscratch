@@ -15,7 +15,8 @@ export default class BarGraph extends React.Component {
         const duration = 500;
         const style = {
             transition: `opacity ${duration}ms`,
-            opacity: 0
+            opacity: 0,
+            marginTop: '40px'
         };
 
         const xScale = d3.scaleBand()
@@ -48,7 +49,7 @@ export default class BarGraph extends React.Component {
                                 key={index}/>;
                 })}
 
-                <TimeLine date={this.props.dates[this.props.index]} scale={timeXScale}/>
+                {/*<TimeLine date={this.props.dates[this.props.index]} scale={timeXScale}/>*/}
 
                 {this.props.data.length &&
                     <XYAxis {...scales} {...this.props} />

@@ -1,5 +1,5 @@
 .container {
-    margin-top: 50px;
+    margin-top: 30px;
 }
 
 .button {
@@ -12,8 +12,9 @@
 }
 
 .datelabel {
-    text-align: right;
-    margin-bottom: 30px;
+    text-align: left;
+    /*margin-bottom: 30px;*/
+    position: absolute;
 }
 
 .tooltip {

@@ -10,7 +10,7 @@ import LineChart from './linechart';
 
 const styles = {
     width: 1200,
-    height: 350,
+    height: 400,
     padding: 20
 };
 
@@ -38,8 +38,6 @@ export default class Chart extends React.Component {
 
         this.state = {
             buttonText: 'Run Data',
-            // data: randomPoints()
-            // data: randomBarData()
             data: [],
             error: {},
             keyIndex: 0,
@@ -108,7 +106,7 @@ export default class Chart extends React.Component {
                     keyIndex: 0,
                     data: data[Object.keys(data)[0]],
                     allData: data,
-                    nowShowing: 'accounts'
+                    nowShowing: 'Composite: C124'
                 });
             })
             .catch(function (error) {
@@ -168,8 +166,9 @@ export default class Chart extends React.Component {
 
     barclick(id, type) {
         let self = this;
+        let nowShowing = `${type}: ${id}`;
 
-        if (type == 'account') {
+        if (type == 'Account') {
             this.serverReturns.getSecurityReturnsForBuAccountAndDateRange()
                 .then(function (data) {
                     // Slight Hack: Need to wait > the bargraph opacity transition duration to allow the animation
@@ -180,7 +179,7 @@ export default class Chart extends React.Component {
                             keyIndex: 0,
                             data: data[Object.keys(data)[0]],
                             allData: data,
-                            nowShowing: 'securities'
+                            nowShowing: nowShowing
                         });
                     }, 600);
                 })
@@ -196,13 +195,13 @@ export default class Chart extends React.Component {
             this.setState({
                 data: []
             });
-        } else if (type == 'security') {
+        } else if (type == 'Security') {
             if (Object.entries(this.state.allSecurityData).length === 0) {
                 this.serverReturns.getSecurityReturnsForDateRange()
                     .then(function (data) {
                         self.setState({
                             data: data[id],
-                            nowShowing: 'securityReturns',
+                            nowShowing: nowShowing,
                             allSecurityData: data
                         });
                     })
@@ -217,7 +216,7 @@ export default class Chart extends React.Component {
             } else {
                 this.setState({
                     data: this.state.allSecurityData[id],
-                    nowShowing: 'securityReturns'
+                    nowShowing: nowShowing
                 });
             }
         }
@@ -254,17 +253,17 @@ export default class Chart extends React.Component {
 
 
     render() {
-        let inlineStyles = {
-            width: styles.width
-        };
-
         let dates = Object.keys(this.state.allData);
+        let inlineStyles = {
+            width: styles.width,
+            transform: `translate(${this.state.keyIndex * 100}px, 0px)`,
+            transition: 'transform 1s'
+        };
 
         return (
             <div>
-                <h1>Playing with React and D3</h1>
-
-                <div className="container">
+                <h2>{this.state.nowShowing}</h2>
+                <div className="container" style={{width: styles.width}}>
                     {this.state.error.message &&
                     <div className="alert">
                         <Alert bsStyle="warning" onDismiss={this.clearAlert}>
@@ -274,16 +273,16 @@ export default class Chart extends React.Component {
                     </div>
                     }
 
-                    {/*<Scatter {...this.state} {...styles} />*/}
 
-                    <div style={inlineStyles} className='datelabel'>
-                        <Label bsStyle='default'>{this.state.data.length ?
-                            dates[this.state.keyIndex]
-                            : new Date().toLocaleDateString()}</Label>
-                    </div>
+                    {this.state.data.length > 0 && this.state.nowShowing !== 'securityReturns' &&
+                        <div style={inlineStyles} className='datelabel'>
+                            <Label bsStyle='default'>{dates[this.state.keyIndex]}</Label>
+                        </div>
+                    }
 
                     {
-                        this.state.nowShowing === 'securityReturns' ? (
+                        this.state.nowShowing &&
+                        this.state.nowShowing.startsWith('Security') ? (
                             <LineChart data={this.state.data}
                                        {...styles}/>
                         ) : ( <BarGraph data={this.state.data}
@@ -305,13 +304,13 @@ export default class Chart extends React.Component {
                 </div>
 
                 {this.state.toolTip &&
-                    <div className="tooltip" style={{
-                        opacity: this.state.toolTip.visible ? 1 : 0,
-                        top: this.state.toolTip.position.top - 20,
-                        left: this.state.toolTip.position.left + 10
-                    }}>
-                        <div>{this.state.toolTip.id}: {this.state.toolTip.ror}</div>
-                    </div>
+                <div className="tooltip" style={{
+                    opacity: this.state.toolTip.visible ? 1 : 0,
+                    top: this.state.toolTip.position.top - 20,
+                    left: this.state.toolTip.position.left + 10
+                }}>
+                    <div>{this.state.toolTip.id}: {this.state.toolTip.ror}</div>
+                </div>
                 }
             </div>
         );

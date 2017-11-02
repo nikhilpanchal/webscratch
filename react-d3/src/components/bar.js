@@ -32,7 +32,7 @@ export default class Bar extends React.Component {
     }
 
     getEntityType(id) {
-        return id.startsWith('account') ? 'account':'security';
+        return id.startsWith('account') ? 'Account':'Security';
     }
 
     handleClick(e) {
@@ -48,7 +48,7 @@ export default class Bar extends React.Component {
     }
 
     render() {
-        let className = this.getEntityType(this.props.entity.id) === 'account' ? 'bar-account' : 'bar-security';
+        let className = this.getEntityType(this.props.entity.id) === 'Account' ? 'bar-account' : 'bar-security';
 
         return <rect className={className}
             style={{opacity: this.state.opacity,

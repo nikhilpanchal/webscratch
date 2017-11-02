@@ -9,11 +9,8 @@ class App extends React.Component {
       <div className='App'>
         <header className='App-header'>
           <img src={logo} className='App-logo' alt='logo' />
-          <h1 className='App-title'>Welcome to React</h1>
+          <h1 className='App-title'>Playing with React and D3</h1>
         </header>
-        <p className='App-intro'>
-            This can be modified to create something that renders on a web page
-        </p>
 
         <Chart />
       </div>
