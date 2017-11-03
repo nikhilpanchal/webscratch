@@ -15,8 +15,8 @@ export default class BarGraph extends React.Component {
         const duration = 500;
         const style = {
             transition: `opacity ${duration}ms`,
-            opacity: 0,
-            marginTop: '40px'
+            opacity: 0
+            // marginTop: '40px'
         };
 
         const xScale = d3.scaleBand()

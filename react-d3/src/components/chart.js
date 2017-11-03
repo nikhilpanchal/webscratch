@@ -255,10 +255,10 @@ export default class Chart extends React.Component {
     render() {
         let dates = Object.keys(this.state.allData);
         let inlineStyles = {
-            width: styles.width,
             transform: `translate(${this.state.keyIndex * 100}px, 0px)`,
             transition: 'transform 1s'
         };
+        let showSecurityLine = this.state.nowShowing && this.state.nowShowing.startsWith('Security');
 
         return (
             <div>
@@ -274,15 +274,21 @@ export default class Chart extends React.Component {
                     }
 
 
-                    {this.state.data.length > 0 && this.state.nowShowing !== 'securityReturns' &&
-                        <div style={inlineStyles} className='datelabel'>
-                            <Label bsStyle='default'>{dates[this.state.keyIndex]}</Label>
+                    {this.state.data.length > 0 && !showSecurityLine &&
+                        <div id="animation-bar" style={{height: '50px', textAlign: 'left'}}>
+                                <h4>
+                                    <Label bsStyle='default'
+                                           style={inlineStyles}
+                                           className='datelabel'>
+                                        {dates[this.state.keyIndex]}
+                                    </Label>
+                                </h4>
                         </div>
                     }
 
                     {
                         this.state.nowShowing &&
-                        this.state.nowShowing.startsWith('Security') ? (
+                        showSecurityLine ? (
                             <LineChart data={this.state.data}
                                        {...styles}/>
                         ) : ( <BarGraph data={this.state.data}
