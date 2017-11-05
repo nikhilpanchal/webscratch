@@ -3,6 +3,7 @@
 @import "home/hist.css";
 @import "home/world_cup.css";
 @import "home/maps.css";
+@import "home/grouped-bar.css";
 
 * {
     -webkit-box-sizing: border-box;

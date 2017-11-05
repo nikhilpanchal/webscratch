@@ -22,6 +22,10 @@ them in the index.html file.
 The index.html file does not create any svg element (anymore). It expects each JS file to append an svg element to the
 body and render its chart within that svg.
 
+### Data
+All data files that any chart references should be placed in the resources directory. In the code you can refer to it
+via the `/resources/<file-name>` path.
+
 ## Adding Code
 To add a new chart, run through the following steps.
 

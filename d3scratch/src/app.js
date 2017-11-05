@@ -5,6 +5,7 @@ import Histogram from './draw/histogram'
 import BarDimple from './draw/bar_dimple'
 import WorldCupGraph from './draw/world_cup'
 import Maps from './draw/maps'
+import GroupedBar from "./draw/groupedbar";
 
 
 // let rectangle = new Rectangle();
@@ -36,5 +37,8 @@ function startPeriodicUpdates() {
 // let worldCup = new WorldCupGraph();
 // worldCup.render();
 
-let maps = new Maps();
-maps.render();
+// let maps = new Maps();
+// maps.render();
+
+let groupedBar = new GroupedBar();
+groupedBar.render();
