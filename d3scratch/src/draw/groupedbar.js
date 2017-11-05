@@ -107,7 +107,7 @@ export default class GroupedBar {
                 .attr("font-family", "sans-serif")
                 .attr("font-size", 10)
                 .selectAll('g')
-                .data(ageGroups.reverse())
+                .data(ageGroups)
                 .enter()
                 .append('g')
                 .attr('transform', (ageGroup, index) => {
@@ -125,7 +125,5 @@ export default class GroupedBar {
                 .attr('x', -5)
                 .attr('y', 12.5);
         });
-
-        console.log("Rendering a grouped D3 Bar Graph");
     }
 }
