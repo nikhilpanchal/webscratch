@@ -36,12 +36,11 @@ export default class GroupedBar {
         this.scaleBarGroup = d3.scaleBand().rangeRound([0, this.width]).paddingInner(0.1);
         this.scaleBarColor = d3.scaleOrdinal(["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"]);
         this.scaleY = d3.scaleLinear().rangeRound([this.height, 0]);
-
     }
 
     render() {
         // Request for the data
-        d3.csv("/resources/grouped_bar_data.csv", (row, index, columns) => {
+        d3.csv("/resources/fund_performance_data.csv", (row, index, columns) => {
             // Convert the numeric values from strings to numbers
             for (let i = 1; i < columns.length; i++) {
                 // for each column except the first, convert the string to a number in each row.
@@ -54,14 +53,15 @@ export default class GroupedBar {
                 throw error;
             }
 
-            let ageGroups = data.columns.slice(1);
+            let nameColumn = data.columns[0];
+            let barData = data.columns.slice(1);
 
             // Set the domain for the scales based on the data.
-            this.scaleBarGroup = this.scaleBarGroup.domain(data.map((row) => row['State']));
-            this.scaleBar = d3.scaleBand().range([0, this.scaleBarGroup.bandwidth()]).domain(ageGroups).paddingInner(0.05);
-            this.scaleBarColor = this.scaleBarColor.domain(ageGroups);
+            this.scaleBarGroup = this.scaleBarGroup.domain(data.map((row) => row[nameColumn]));
+            this.scaleBar = d3.scaleBand().range([0, this.scaleBarGroup.bandwidth()]).domain(barData).paddingInner(0.05);
+            this.scaleBarColor = this.scaleBarColor.domain(barData);
             this.scaleY = this.scaleY.domain([0, d3.max(data, function (row) {
-                return d3.max(ageGroups, function (col) {
+                return d3.max(barData, function (col) {
                     return row[col];
                 });
             })]);
@@ -75,10 +75,10 @@ export default class GroupedBar {
                 .data(data)
                 .enter()
                 .append('g')
-                .attr('transform', (row) => `translate(${this.scaleBarGroup(row['State'])},0)`)
+                .attr('transform', (row) => `translate(${this.scaleBarGroup(row[nameColumn])},0)`)
                 .selectAll('rect')
                 .data(function (row) {
-                    return ageGroups.map((ageGroup) => {
+                    return barData.map((ageGroup) => {
                         return {
                             'quantity': row[ageGroup],
                             ageGroup
@@ -107,7 +107,7 @@ export default class GroupedBar {
                 .attr("font-family", "sans-serif")
                 .attr("font-size", 10)
                 .selectAll('g')
-                .data(ageGroups)
+                .data(barData)
                 .enter()
                 .append('g')
                 .attr('transform', (ageGroup, index) => {
