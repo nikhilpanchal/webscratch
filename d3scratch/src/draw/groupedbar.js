@@ -124,6 +124,12 @@ export default class GroupedBar {
                 .text((d) => d)
                 .attr('x', -5)
                 .attr('y', 12.5);
+
+            // Have the graph appear. Slowly...
+            d3.select('svg')
+                .transition()
+                .duration(1000)
+                .style('opacity', 1);
         });
     }
 }
