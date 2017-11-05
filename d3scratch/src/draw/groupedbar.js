@@ -14,9 +14,9 @@ import * as d3 from 'd3';
 export default class GroupedBar {
     constructor() {
         this.svg_height = 500;
-        this.svg_width = 1200;
+        this.svg_width = 960;
         this.margin = {
-            left: 20,
+            left: 40,
             right: 20,
             top: 20,
             bottom: 20
@@ -36,6 +36,7 @@ export default class GroupedBar {
         this.scaleBarGroup = d3.scaleBand().rangeRound([0, this.width]).paddingInner(0.1);
         this.scaleBarColor = d3.scaleOrdinal(["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"]);
         this.scaleY = d3.scaleLinear().rangeRound([this.height, 0]);
+
     }
 
     render() {
@@ -57,13 +58,16 @@ export default class GroupedBar {
 
             // Set the domain for the scales based on the data.
             this.scaleBarGroup = this.scaleBarGroup.domain(data.map((row) => row['State']));
-            this.scaleBar = d3.scaleBand().range([0, this.scaleBarGroup.bandwidth()]).domain(ageGroups).padding(0.05);
+            this.scaleBar = d3.scaleBand().range([0, this.scaleBarGroup.bandwidth()]).domain(ageGroups).paddingInner(0.05);
             this.scaleBarColor = this.scaleBarColor.domain(ageGroups);
             this.scaleY = this.scaleY.domain([0, d3.max(data, function (row) {
                 return d3.max(ageGroups, function (col) {
                     return row[col];
                 });
             })]);
+
+            this.xAxis = d3.axisBottom(this.scaleBarGroup);
+            this.yAxis = d3.axisLeft(this.scaleY);
 
             // Run the selectAll magic.
             // Generate the bars
@@ -90,8 +94,36 @@ export default class GroupedBar {
                 .attr('fill', (ageGroupInfo) => this.scaleBarColor(ageGroupInfo.ageGroup));
 
             // Generate the axes
+            this.g.append('g')
+                .attr('transform', `translate(0, ${this.height})`)
+                .call(this.xAxis);
+
+            this.g.append('g')
+                .call(this.yAxis.ticks(null, 's'));
 
             // Generate the legend
+            let legend = this.g.append('g')
+                .attr('transform', `translate(${this.width - this.margin.right}, 0)`)
+                .attr("font-family", "sans-serif")
+                .attr("font-size", 10)
+                .selectAll('g')
+                .data(ageGroups.reverse())
+                .enter()
+                .append('g')
+                .attr('transform', (ageGroup, index) => {
+                    return `translate(0, ${20*index})`
+                });
+
+            legend.append('rect')
+                .attr('width', 20)
+                .attr('height', 19)
+                .attr('fill', this.scaleBarColor);
+
+            legend.append('text')
+                .attr('text-anchor', 'end')
+                .text((d) => d)
+                .attr('x', -5)
+                .attr('y', 12.5);
         });
 
         console.log("Rendering a grouped D3 Bar Graph");
