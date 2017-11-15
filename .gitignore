@@ -21,3 +21,9 @@ yarn-debug.log*
 yarn-error.log*
 
 package-lock.json
+
+.idea
+*.iml
+node_modules
+udacity
+dist
