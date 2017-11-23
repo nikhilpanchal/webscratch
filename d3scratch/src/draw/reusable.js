@@ -1,14 +1,14 @@
-import {chartFactory} from './reusable_chart';
+import {chartFactory} from './reusable_groupedbarchart';
 import * as d3 from 'd3';
 
-export default class GroupedBarReusable {
+export default class Reusable {
     constructor() {
     }
 
     render() {
         let generator = chartFactory()
             .width(600)
-            .height(500)
+            .height(300)
             .margin({
                 left: 40,
                 right: 20,

@@ -6,7 +6,7 @@ import BarDimple from './draw/bar_dimple'
 import WorldCupGraph from './draw/world_cup'
 import Maps from './draw/maps'
 import GroupedBar from "./draw/groupedbar";
-import GroupedBarReusable from "./draw/groupedbarreusable";
+import Reusable from "./draw/reusable";
 
 
 // let rectangle = new Rectangle();
@@ -44,5 +44,5 @@ function startPeriodicUpdates() {
 // let groupedBar = new GroupedBar();
 // groupedBar.render();
 
-let groupedBarReusable = new GroupedBarReusable();
-groupedBarReusable.render();
+let reusable = new Reusable();
+reusable.render();
