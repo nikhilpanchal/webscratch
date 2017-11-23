@@ -4,6 +4,7 @@
 @import "home/world_cup.css";
 @import "home/maps.css";
 @import "home/grouped-bar.css";
+@import "home/line.css";
 
 * {
     -webkit-box-sizing: border-box;
@@ -12,4 +13,11 @@
 }
 
 .container {
+    margin: auto;
+    max-width: 1210px;
+    min-width: 300px;
+}
+
+.container svg {
+    margin-left: 4px;
 }

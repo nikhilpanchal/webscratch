@@ -46,3 +46,4 @@ function startPeriodicUpdates() {
 
 let reusable = new Reusable();
 reusable.render();
+reusable.renderLines();

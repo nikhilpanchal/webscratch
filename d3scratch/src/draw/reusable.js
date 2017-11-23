@@ -1,4 +1,5 @@
 import {chartFactory} from './reusable_groupedbarchart';
+import {lineChartFactory} from "./reusable_linechart";
 import * as d3 from 'd3';
 
 export default class Reusable {
@@ -23,5 +24,51 @@ export default class Reusable {
                 .datum(data)
                 .call(generator);
         });
+    }
+
+    renderLines() {
+        let chart = lineChartFactory()
+            .width(600)
+            .height(300)
+            .margin({
+                left: 40,
+                right: 20,
+                top: 20,
+                bottom: 30
+            })
+            .dataMapper((point) => {
+                point.x = d3.timeParse("%b %Y")(point.date);
+                point.y = +point.price;
+
+                return point;
+            });
+
+        d3.csv('/resources/sp500.csv', function (data) {
+            d3.select('.container')
+                .datum(data)
+                .call(chart);
+        });
+
+        let chartNew = lineChartFactory()
+            .width(1204)
+            .height(300)
+            .margin({
+                left: 40,
+                right: 20,
+                top: 20,
+                bottom: 30
+            })
+            .dataMapper((point) => {
+                point.x = d3.timeParse("%e-%b-%y")(point.date);
+                point.y = +point.close;
+
+                return point;
+            });
+
+        d3.tsv('/resources/stock_price.tsv', function (data) {
+            d3.select('.container')
+                .datum(data)
+                .call(chartNew);
+        })
     }
 }
