@@ -40,4 +40,21 @@ Performance appraisal treats returns in conjunction with risk: Were the returns 
 Goes hand in had with performance appraisal. Answers the question `What managers should be hired, retained or fired ?`
 
 ### Investment Performance Presentation
-`What performance information should be presented? In what way?`    
+`What performance information should be presented? In what way?`   
+
+## RoR Methodologies
+
+### Time Weighted Rate of Return
+The compound rate of growth of *one unit* of money invested in the portfolio at the start of the measurement period. Is not affected by external cash flows.
+
+### Money Weighted Rate of Return 
+The compound rate of growth that would produce the ending value of the portfolio given the timing and magnitude of all cash flows during the measurement period. Takes external cash flows into account (by definition).
+
+## Risk Measurement
+Two broad categories
+
+### Absolute Risk
+Measurement of the risk of the portfolio on a standalone basis
+
+### Relative Risk
+Measurement of risk of the portfolio as compared to a benchmark
