@@ -9,6 +9,7 @@ function StackedAreaChartFactory() {
     function generator(selection) {
         let scaleX,
             scaleY,
+            scaleColor,
             g,
             svg,
             chartWidth,
@@ -19,6 +20,7 @@ function StackedAreaChartFactory() {
 
         scaleX = d3.scaleTime().range([0, chartWidth]);
         scaleY = d3.scaleLinear().rangeRound([chartHeight, 0]);
+        scaleColor = d3.scaleOrdinal(d3.schemeCategory20b);
 
 
         svg = selection.append('svg')
@@ -32,16 +34,24 @@ function StackedAreaChartFactory() {
 
         selection.each(function (data) {
             // Generate Chart here.
+            let dataColumns = data.columns.slice(1);
             data = data.map(dataMapper);
 
             let seriesData = d3.stack()
-                .keys(["equities", "bonds"])
+                .keys(dataColumns)
                 .order(d3.stackOrderNone)
                 .offset(d3.stackOffsetNone)(data);
 
+            let maxy = d3.max(data, function (d) {
+                let vals = d3.keys(d).map(function (key) {
+                    return key !== 'date' ? d[key] : 0;
+                });
+                return d3.sum(vals);
+            });
 
             scaleX.domain(d3.extent(data, (row) => row.date));
-            scaleY.domain([0, d3.max(data, (d) => d.bonds)]);
+            scaleY.domain([0, maxy]);
+            scaleColor.domain(dataColumns);
 
             let area = d3.area()
                 .x((point) => scaleX(point.data.date))
@@ -53,11 +63,7 @@ function StackedAreaChartFactory() {
                 .data(seriesData)
                 .enter()
                 .append('path')
-                .attr('stroke', 'black')
-                .attr('stroke-width', '1.5')
-                .attr('fill', (d) => {
-                    return d.key === 'equities' ? 'seashell' : 'peachpuff';
-                })
+                .attr('fill', scaleColor)
                 .attr('d', area);
 
 
@@ -112,4 +118,4 @@ function StackedAreaChartFactory() {
     return generator;
 }
 
-export { StackedAreaChartFactory };
+export {StackedAreaChartFactory};

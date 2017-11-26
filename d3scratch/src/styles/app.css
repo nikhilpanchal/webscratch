@@ -5,6 +5,7 @@
 @import "home/maps.css";
 @import "home/grouped-bar.css";
 @import "home/line.css";
+@import "home/area-chart.css";
 
 * {
     -webkit-box-sizing: border-box;

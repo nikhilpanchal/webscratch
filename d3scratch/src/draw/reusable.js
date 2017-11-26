@@ -77,8 +77,8 @@ export default class Reusable {
         let timeParse = d3.timeParse("%b-%y");
 
         let generator = StackedAreaChartFactory()
-            .width(1000)
-            .height(500)
+            .width(1200)
+            .height(600)
             .margin({
                 left: 40,
                 right: 20,
@@ -86,9 +86,13 @@ export default class Reusable {
                 bottom: 30
             })
             .dataMapper((row) => {
-                row.date = timeParse(row.date);
-                row.equities = +row.equities;
-                row.bonds = +row.bonds;
+                d3.keys(row).map((key) => {
+                    if (key === "date") {
+                        row.date = timeParse(row.date);
+                    } else {
+                        row[key] = +row[key];
+                    }
+                });
 
                 return row;
             });
