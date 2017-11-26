@@ -1,5 +1,6 @@
 import {chartFactory} from './reusable_groupedbarchart';
 import {lineChartFactory} from "./reusable_linechart";
+import {StackedAreaChartFactory} from "./stackedarea";
 import * as d3 from 'd3';
 
 export default class Reusable {
@@ -69,6 +70,33 @@ export default class Reusable {
             d3.select('.container')
                 .datum(data)
                 .call(chartNew);
-        })
+        });
+    }
+
+    renderArea() {
+        let timeParse = d3.timeParse("%b-%y");
+
+        let generator = StackedAreaChartFactory()
+            .width(1000)
+            .height(500)
+            .margin({
+                left: 40,
+                right: 20,
+                top: 20,
+                bottom: 30
+            })
+            .dataMapper((row) => {
+                row.date = timeParse(row.date);
+                row.equities = +row.equities;
+                row.bonds = +row.bonds;
+
+                return row;
+            });
+
+        d3.csv('/resources/asset_class.csv', (data) => {
+            d3.select('.container')
+                .datum(data)
+                .call(generator);
+        });
     }
 }
