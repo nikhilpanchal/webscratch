@@ -45,6 +45,6 @@ function startPeriodicUpdates() {
 // groupedBar.render();
 
 let reusable = new Reusable();
-// reusable.render();
-// reusable.renderLines();
+reusable.render();
+reusable.renderLines();
 reusable.renderArea();

@@ -6,6 +6,7 @@
 @import "home/grouped-bar.css";
 @import "home/line.css";
 @import "home/area-chart.css";
+@import "home/header.css";
 
 * {
     -webkit-box-sizing: border-box;
@@ -13,10 +14,15 @@
     box-sizing: border-box;
 }
 
+body {
+    margin: 0;
+}
+
 .container {
     margin: auto;
     max-width: 1210px;
     min-width: 300px;
+    padding: 55px 0;
 }
 
 .container svg {

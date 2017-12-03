@@ -1,0 +1,66 @@
+.header {
+    background: #ffffff;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    box-shadow: 0 0 4px rgba(0,0,0,.14), 0 4px 8px rgba(0,0,0,.28);
+    -webkit-box-shadow: 0 0 4px rgba(0, 0, 0, .14), 0 4px 8px rgba(0, 0, 0, .28);
+    -moz-box-shadow: 0 0 4px rgba(0, 0, 0, .14), 0 4px 8px rgba(0, 0, 0, .28);
+    box-shadow: 0 0 4px rgba(0, 0, 0, .14), 0 4px 8px rgba(0, 0, 0, .28);
+}
+
+.headerContainer {
+    /*height: 48px;*/
+    padding: 0 24px;
+    position: relative;
+    display: flex;
+}
+
+.headerContainer div {
+    display: inline-block;
+}
+
+.logo {
+    margin: 6px 0;
+    display: inline-block;
+    opacity: 1;
+}
+
+.logo:hover {
+    opacity: 0.7;
+}
+
+.product-logo {
+    height: 32px;
+    margin: 2px 16px 2px 0px;
+}
+
+.menu ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+}
+
+.menu li {
+    display: inline-block;
+}
+
+.nav-tab {
+    display: inline-block;
+    line-height: 44px;
+    padding: 0 24px;
+    margin: 0px;
+    color: rgba(0,0,0,.54);
+    font-weight: 400;
+    border-top: 2px solid transparent;
+    border-bottom: 2px solid transparent;
+}
+
+.nav-tab:link, .nav-tab:visited {
+    text-decoration: none;
+}
+
+.nav-tab:hover, .nav-tab:focus {
+    color: rgba(0, 0, 0, .87);
+}
