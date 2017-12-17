@@ -73,7 +73,7 @@ Can earn interest. Increases when income from assets is received (dividends, cou
 Foreign or Domestic Assets are classified relative to the domicility of the investor. The return of foreign assets in the foreign currency is deemed its **Local Currency Return**. This can be restated as the **Domestic Currency Return** by converting it to base currency of the investor using the  **Spot Exchange Rate**
 
 ```
-Rbase = V1foreign * Spot Domestic/Foreign / V0foerign * Spot Domestic/Foreign  - 1
+Rbase = V1foreign * Spot Domestic/Foreign / V0foreign * Spot Domestic/Foreign  - 1
 
 Return in Local Currency = ViForeign/V0Foreign - 1
 
@@ -86,7 +86,7 @@ Total Return = (1 + Return in Local Currency) (1 + Currency Return) - 1
 ### Short and Leveraged Positions
 Short positions, represents owning a negative position in an asset -- Like Selling a stock short. Its return is calculated the usual way, however when combined with other assets in a portfolio it would have a negative weight.
 
-Leverage is the use of borrowing, or purchasing assets on a margin to maginify gains or losses.
+Leverage is the use of borrowing, or purchasing assets on a margin to magnify gains or losses.
 
 ```
 R Cash Basis = V1 - V0 / V0  where V0 is the sum of the invested capital and the borrowed funds (total investment)
@@ -96,3 +96,251 @@ R Levegerage = V1 - Interest payment on cash borrowed / Invested Capital
              
 Leverage Ratio = Market Value of Debt / Market Value of Debt + Market Value of Equity  
 ```
+
+
+## Factors affecting returns
+The investor could incur a number of **costs** during the holding period which would affect the holding period return. These costs would result in several types of modified returns
+
+### Inflation
+
+R real = R - IR / 1 + IR   
+
+IR: Inflation rate of return (I1/I0).
+R: Nominal return (V1/V0).
+
+### Fees
+ * GOF: Gross of Fee. Rate of return reduced by any transaction costs and trading expenses incurred
+ ```
+ GOF = (1 + RNOF)(1 + Fee%) - 1.
+ ```
+ 
+ * NOF: Net of Fee. It is the GOF returns reduced by the management fees paid by the investor
+ ```
+ NOF = (1 + RGOF) / (1 + Fee%)  - 1.
+ ```
+ 
+### Tax
+Could be applicable of dividends paid out, investor redemption (converting unrealized gains to realized). Also could incur when the portfolio manager sells assets or the investments produce dividends --- that aren't necessarily paid out. Even if they are re=invested a tax liability does occur
+
+The tax liabiity occurs on the `gain`, not on the ending value. (V1 - V0)(1 - T).
+
+
+## Multi-Period Rate of Return
+In principle, the multi-period rate of return can be calculated the same way as the single period rate of return --- If there are no external cash flows within the period.
+
+To calculate multi-period returns, you (geomertically) link up the single period rates of returns by multiplying them together
+```
+Rm = (1+R1)(1+R2)(1+R3) - 1
+
+If R1=R2=R3=R
+
+Rm = (1 + R)^3 - 1
+```
+
+The difference between linear returns here is the compounding effect, where you get return on return (like interest on interest). Therefore to calculate multi-period returns you can't just add up the single period returns, you need to take the product.
+
+The effective annual rate is dependent on the compounding period, since that takes compounding (interest on interest) into play.
+```
+Reffective = (1 + R/n)^n - 1
+
+For continuous compounding
+Reffective = e^i
+```
+
+## Arithmetic and Geometric Rates of Return
+
+### Arithmetic Return
+
+
+```
+R = R1 + R2 + R3 + R4 / 4
+```
+ 
+### Geometric Return
+
+```
+R = (1 + R1)(1+ R2)(1 + R3)(1 + R4)^1/4
+``` 
+ 
+
+Geometric Rate of Return is always less than or equal to the arithmatic one. Approximately
+
+```
+Ra = Rg + (s^2)/2
+
+Where s is the standard deviation of the individual rates of return
+```
+
+### Excess Returns
+
+```
+Arithmetic = R - B
+
+Geometric  = (1 + R / 1 + B) - 1
+           = ( R - B ) / ( 1 + B )
+
+Where R is the portfolio return and B is benchmark return
+```
+
+Interesting to note that the Geometric excess return is the Arithmetic Excess Return expressed as a percentage of the Benchmark return 
+
+```
+1 + G = (1 + G1)(1 + G2)(1 + G3)(1 + G4)
+```
+Also interesting is that Geometric returns are compoundable. So if you have the Geometric excess return for each period, and you link them together, you will end up with the cumulative Geometric excess return over the entire period. No such compounding or additive relationship exists for the arithmetic returns
+
+Geometric excess returns are also convertible across currencies.
+
+```
+1 + R / 1 + B  = (1 + RForeign) * (1 + RCurrency) / (1 + BForeign) * (1 + RCurrency)
+```
+This is because the currency return `RCurrency` is the same for both the Portfolio and the Benchmark, hence they cancel out.
+So what happens here, is the Geometric mean will remain the same across different currencies, since the Currency returns for the portfolio and benchmark cancel out. However the arithmetic return will differ from currency to currency.
+
+
+Given that Geometric meean is a proportionate measure, it takes into account the percentage difference between the portfolio and benchmark return.
+So if you have a portfolio return of 51% against a benchmark return of 50% and another portfolio return of 11% against a benchmark return of 10%, both portfolios excess returns would be the same (1%)
+However the geometric mean of the first would be 0.91% and the second would be 0.67% showing that the first portfolio performed better since it had a greater percentage excess return.
+
+
+## External Cash Flows
+These are defined as capital that enters or exits a portfolio (Deposits or Withdrawls by investors), except for `NOF` calculations. In this case, the fee or expense is paid by transferring capital out of the portfolio and can be treated as reductions in the portfolio value (Mutual fund NAVs).
+If on the other hand fee and expense payments are treated and calculated as external cash flows, then the returns calculated are `GOF` returns.
+
+The timing and magnitude of the cash flows are important to calculate portfolio returns. Additionally, simple begin and ending market values will not be enough, we will need valuations at other time intervals as well to calculate returns for portfolios with external cash flows.
+
+### Money Weighted Rate of Return (MWRR)
+Is the `Internal Rate of Return (IRR)`. It gives greater weight to time periods where the portfolio has greater value than to periods where the portfolio has less value.
+
+```
+Considering a portfolio with N external cash flows
+V1 = V0(1 + R) + sum(Ck(1 + R)^Wk)                       For k = 1 -> N
+
+Wk = TD - Dk / TD                                    TD is the number of calendar days in the period
+                                                     Assumes end of day cash flows
+                                                     Dk is the number of days since the beginning of the period
+                                                     
+Wk = TD - Dk + 1 / TD                                Assumes beginning of day cash flows.                                                     
+```
+The Return is the value R that satisfies this equation, which can only be obtained by trial and error.
+
+### Time Weighted Rate of Return (TWRR)
+Is a measure of return that is insensitive to external cash flows. Is the preferred method in the industry since it allows the evaluation of the portfolio managers performance regardless of when investors decide to make contributions or withdrawals.
+The return in this method is calculated by splitting the overall holding time period into multiple sub-periods depending on the occurrance of the cash flows and calculating the return in each sub-period using the value just before and after the cash flows.
+
+```
+R = (V1 / V0 * V2 / V1` * V3 / V2`) -1
+
+Where Vk` is the value of the portfolio just after cash flow k and Vk is the portfolio value just before cash flow k
+```
+
+This could also be re-arranged to generalize it as a calculation of linked returns
+```
+If
+Rt = Vt+1 / Vt1` - 1
+
+Then
+R = (1 + R1)(1 + R2)....(1 + Rn)
+```
+
+Essentially what is done here is the time period is split between cash flows, and the values from the start of the period to the time just before the cash flow occurrence are used to calculate the return for that sub-period.
+Then returns across these sub-periods are chain-linked together to combine them into the cumulative overall return. This way, the calculation of the return is made insensitive to the external cash flow (pretty neat).
+
+For all of this to work, the valuations of the portfolios at the time of the cash flows must be available (which might not always be a safe assumption --- for illiquid assets)    
+
+Closely related to unit value price: Pricing a single unit of a fund (NAV).
+
+```
+NAV = V / U
+
+V: Value of the fund
+U: Number of units in the fund
+```
+
+When investors add new money to the fund, new (additional) units are issued proportional to the rise in value from the influx of the cash to keep the NAV the same
+
+```
+NAV = V0 / U0
+
+NAV = V1 / U1           After an external cash flow.
+U1 = V1/ NAV
+   = V0 + Cash Flow / NAV       The new number of units is the value of U1 that satisfies this equation
+   
+U1 - U0 = Cash Flow /NAV   
+```
+
+Since the number of units adjust along with the total value of the fund after the external cash flows to keep the NAV constant, you can calculate the cumulative return of the fund during a period cash flows as
+
+```
+R = (NAVn / NAV0) - 1
+```
+(pretty neat).
+
+*Since Time Weighted Rate of return is insensitive to external cash flows it helps to compare portfolios with different investor cash deposits and withdrawls and hence is the preferred way of comparing results across portfolios.*
+
+Time Weighted Rate of Return *measures the performance of the manager, whereas Money Weighted Rate of Return measures the performance of the fund.
+
+### Approximate Time Weighted Return Methods
+The main issue with TWR method is the availability (or lack thereof) of portfolio valuations at the times of the cash flows. Often times this is not available or practically achievable.
+So we apply approximations to TWR by making use of the periodically available valuations (which are typically done monthly or quarterly)
+
+The basic approximation procedure is as follows
+
+ 1. Divide the overall holding time into sub-periods corresponding to the availability of valuations.
+ 1. Calculate an approximate return for each sub-period
+ 1. Link the sub-period returns
+ 
+For Step 2 above, there are two possible methods that could be used.
+
+#### Linked IRR Method
+In this method, the sub-period return is calculated using the `IRR` method (step 2 above), that are then linked together (step 3) to get the overall return. 
+This is also known as the `BAI` method (since it was recommended in the *Bank Administration Institute* study)
+
+Here the time sub-periods are defined not based on the occurance of the cash flows (as in true TWR) but based on the fixed valuation reporting period. So its possible that a single holding sub-period could contain multiple cash flows.
+A shortcoming of this method is that it assumes the return to be constant during the sub-period (despite the multiple cash flows). This approximation degrades as the magnitude of the cash flows increases. The general `BAI recommendation` is that `if a cash flow exceeds 10% of the portfolio value, the portfolio should be revalued`.
+
+#### Linked Modified Dietz
+In this method, the sub-period return (Step 2) is calculated by Weighting the cash flows that occur during that sub-period using the Day-weighting fraction method (See MWRR)
+
+Essentially Dietz suggested that the cash flows be weighted and added to the Beginning and Ending values of the portfolio to get the `Adjusted` Beginning and Ending Values
+
+```
+V0-adjusted = V0 + sum(WkCk)
+V1-adjusted = V1 - sum((1 - Wk)Ck)          Weight: (1 - Wk)
+
+R = V1-adjusted - V0-adjusted / V0-adjusted
+```
+
+Substituting the terms for V0-adjusted and V1-adjusted
+
+```
+R = V1 - sum((1-Wk)Ck) - V0 - sum(WkCk) / V0 + sum(WkCk)
+  = V1 - V0 - sum(Ck) / V0 + sum(WkCk)
+```
+
+Re-arranging these terms to solve for V1 we get
+
+```
+V1 = V0(1 + R) + sum(Ck*(1 + WkR))
+```
+Notice that this is a first order approximation of the IRR method --- Instead of using the weight as an exponent we multiply it to the return.
+
+In each of the approximated TWRR methods here, the magnitude of the cash flows will affect the return calculations, leading to the deduction that these approximations are `NOT` insensitive to cash flows.
+
+#### Portfolio Segment Returns
+Segmentation of a portfolio is often done by categorizing its holdings using various criteria ---- Asset class, sector, country, industry etc.
+
+The return of a portfolio using its segments is calculated as the weighted sum of the returns of its segments
+
+```
+R = w1R1 + w2R2
+
+w1 + w2 = 1
+```
+
+It is important to adjust weights of the segments along with their returns, especially when breaking the portfolio segments into holding sub-periods and especially when the segments have cash flows during those sub-periods.
+This is done using the Modified Dietz method of calculating the adjusted begin market value `V0-adj = V0 + sum(CkWk)` and using this adjusted begin market value to calculate the weights.
+
+So you use the Modified Dietz method to first calculate the begin market value, and then use the same method to calculate the return for the segment in the holding sub-period. Once you have these you calculate the return of the overall portfolio for the sub-period by adding each segment's weighted return.
+
+
