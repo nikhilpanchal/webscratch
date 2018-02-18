@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
+import Header from '../../components/header';
 import Head from 'next/head';
+
 
 import {
     PRIMARY_COLOR,
@@ -57,6 +59,7 @@ const withMui = function(ComposedComponent) {
                         <link href='https://fonts.googleapis.com/css?family=Lato' rel='stylesheet'/>
                     </Head>
                     <MuiThemeProvider muiTheme={muiTheme}>
+                        <Header/>
                         <ComposedComponent {...this.props} />
                     </MuiThemeProvider>
                 </div>
