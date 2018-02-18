@@ -6,14 +6,22 @@ import Link from "next/link";
 
 const Index = ({posts}) => {
     return (<div>
+        <style jsx>
+            {`
+                .post-link {
+                    text-decoration: none;
+                    color: #fff;
+                }
+            `}
+        </style>
         {
             posts.map((post) => {
                 return <Card key={post.id}>
                     <CardHeader title={post.title}/>
                     <CardText>
-                        <RaisedButton fullWidth={false} primary={true}>
+                        <RaisedButton fullWidth={true} primary={true}>
                             <Link href={`/post?id=${post.id}`} as={`/blog/${post.id}`}>
-                                <a>Click to view post</a>
+                                <a className="post-link">Click to view post</a>
                             </Link>
                         </RaisedButton>
                     </CardText>

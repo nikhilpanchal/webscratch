@@ -8,7 +8,14 @@ import Link from 'next/link';
 const Post = ({title, content}) => {
     return (
         <div>
-
+            <style jsx>
+                {`
+                .post-link {
+                    text-decoration: none;
+                    color: #000;
+                }
+            `}
+            </style>
             <Card>
                 <CardHeader title={title} />
                 <CardText>
@@ -16,7 +23,7 @@ const Post = ({title, content}) => {
 
                     <RaisedButton fullWidth={false}>
                         <Link href='/' as="/blog" >
-                            <a>Back</a>
+                            <a className='post-link'>Back</a>
                         </Link>
                     </RaisedButton>
                 </CardText>
