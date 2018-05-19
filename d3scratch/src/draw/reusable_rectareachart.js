@@ -65,7 +65,7 @@ function rectAreaChart() {
                     return scaleY(d[1]);
                 })
                 .attr('width', (d) => scaleWidth(d[0]))
-                .attr('height', (d) => chartHeight - scaleY(d[1]))
+                .attr('height', (d) => chartHeight - scaleY(d[1] - d[2]))
                 .attr('fill', function(d, i) {
                     return scaleColor(i);
                 })
