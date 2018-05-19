@@ -109,8 +109,15 @@ export default class Reusable {
         let generator = RectangleAreaChartGenerator()
             .height(400)
             .width(600)
+            .margin({
+                left: 20, right: 20, top: 20, bottom: 20
+            })
             .showLegend(true);
 
-        generator();
+        d3.csv('/resources/attribution.csv', function (data) {
+            d3.select('.container')
+                .datum(data)
+                .call(generator);
+        })
     }
 }

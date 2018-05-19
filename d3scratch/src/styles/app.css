@@ -7,6 +7,7 @@
 @import "home/line.css";
 @import "home/area-chart.css";
 @import "home/header.css";
+@import "home/rectanglearea-chart.css";
 
 * {
     -webkit-box-sizing: border-box;
