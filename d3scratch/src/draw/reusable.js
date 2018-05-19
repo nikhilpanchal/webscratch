@@ -1,6 +1,7 @@
 import {chartFactory} from './reusable_groupedbarchart';
 import {lineChartFactory} from "./reusable_linechart";
 import {StackedAreaChartFactory} from "./stackedarea";
+import {RectangleAreaChartGenerator} from "./reusable_rectareachart";
 import * as d3 from 'd3';
 
 export default class Reusable {
@@ -102,5 +103,14 @@ export default class Reusable {
                 .datum(data)
                 .call(generator);
         });
+    }
+
+    renderRectangleArea() {
+        let generator = RectangleAreaChartGenerator()
+            .height(400)
+            .width(600)
+            .showLegend(true);
+
+        generator();
     }
 }
