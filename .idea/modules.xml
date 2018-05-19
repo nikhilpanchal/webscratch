@@ -4,7 +4,10 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/d3scratch/d3scratch.iml" filepath="$PROJECT_DIR$/d3scratch/d3scratch.iml" />
       <module fileurl="file://$PROJECT_DIR$/docs/docs.iml" filepath="$PROJECT_DIR$/docs/docs.iml" />
+      <module fileurl="file://$PROJECT_DIR$/next/next.iml" filepath="$PROJECT_DIR$/next/next.iml" />
       <module fileurl="file://$PROJECT_DIR$/pwaudacity/pwaudacity.iml" filepath="$PROJECT_DIR$/pwaudacity/pwaudacity.iml" />
+      <module fileurl="file://$PROJECT_DIR$/react-d3/react-d3.iml" filepath="$PROJECT_DIR$/react-d3/react-d3.iml" />
+      <module fileurl="file://$PROJECT_DIR$/react-egghead/react-egghead.iml" filepath="$PROJECT_DIR$/react-egghead/react-egghead.iml" />
       <module fileurl="file://$PROJECT_DIR$/responsivewebdesign/responsivewebdesign.iml" filepath="$PROJECT_DIR$/responsivewebdesign/responsivewebdesign.iml" />
       <module fileurl="file://$PROJECT_DIR$/webstarterkit/webstarterkit.iml" filepath="$PROJECT_DIR$/webstarterkit/webstarterkit.iml" />
     </modules>

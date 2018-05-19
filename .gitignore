@@ -27,3 +27,8 @@ package-lock.json
 node_modules
 udacity
 dist
+
+**/*.iml
+d3scratch/resources/Unitized Weighted RoR.xlsx
+next/.next
+next/public/
