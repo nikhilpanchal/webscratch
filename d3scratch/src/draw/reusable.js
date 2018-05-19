@@ -110,7 +110,7 @@ export default class Reusable {
             .height(400)
             .width(600)
             .margin({
-                left: 20, right: 20, top: 20, bottom: 20
+                left: 25, right: 20, top: 20, bottom: 25
             })
             .showLegend(true);
 

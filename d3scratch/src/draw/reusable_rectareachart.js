@@ -15,9 +15,10 @@ function rectAreaChart() {
     function generator(selection) {
         console.log("Displaying a rectangular area chart");
 
-        let g, scaleY, scaleWidth, scaleHeight,
+        let g, scaleY, scaleWidth, scaleColor,
             chartWidth = width - margin.left - margin.right,
-            chartHeight = height - margin.top - margin.bottom;
+            chartHeight = height - margin.top - margin.bottom,
+            xAxis, yAxis;
 
         // Create the container svg and a group element inside it
         g = selection.append('svg')
@@ -30,6 +31,9 @@ function rectAreaChart() {
         // Set the scale ranges
         scaleY = d3.scaleLinear().rangeRound([chartHeight, 0]);
         scaleWidth = d3.scaleLinear().rangeRound([0, chartWidth]);
+        scaleColor = d3.scaleOrdinal()
+            .range(['firebrick', 'bisque'])
+            .domain([0, 1]);
 
         // run through the selection
         selection.each(function (data) {
@@ -48,7 +52,10 @@ function rectAreaChart() {
             })]);  // return
             scaleY = scaleY.domain([0, 100]); // weight
 
-            // Run the selectall magic.
+            xAxis = d3.axisBottom(scaleWidth);
+            yAxis = d3.axisLeft(scaleY);
+
+            // Run the selectall magic to draw the rectangle areas.
             g.selectAll('g')
                 .data(data)
                 .enter()
@@ -58,8 +65,19 @@ function rectAreaChart() {
                     return scaleY(d[1]);
                 })
                 .attr('width', (d) => scaleWidth(d[0]))
-                .attr('height', (d) => (chartHeight - scaleY(d[1])))
-                .attr('fill', 'firebrick');
+                .attr('height', (d) => chartHeight - scaleY(d[1]))
+                .attr('fill', function(d, i) {
+                    return scaleColor(i);
+                })
+                .style('opacity', 0.5);
+
+            // Draw the axes
+            g.append('g')
+                .attr('transform', `translate(0, ${chartHeight})`)
+                .call(xAxis);
+
+            g.append('g')
+                .call(yAxis);
         });
     }
 
