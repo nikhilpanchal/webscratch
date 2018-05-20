@@ -15,7 +15,7 @@ function rectAreaChart() {
     function generator(selection) {
         console.log("Displaying a rectangular area chart");
 
-        let g, scaleY, scaleWidth, scaleColor,
+        let g, scaleY, scaleX, scaleColor,
             chartWidth = width - margin.left - margin.right,
             chartHeight = height - margin.top - margin.bottom,
             xAxis, yAxis;
@@ -30,9 +30,9 @@ function rectAreaChart() {
 
         // Set the scale ranges
         scaleY = d3.scaleLinear().rangeRound([chartHeight, 0]);
-        scaleWidth = d3.scaleLinear().rangeRound([0, chartWidth]);
+        scaleX = d3.scaleLinear().rangeRound([0, chartWidth]);
         scaleColor = d3.scaleOrdinal()
-            .range(['firebrick', 'bisque'])
+            .range(['firebrick', 'bisque', 'sandybrown', 'tan'])
             .domain([0, 1]);
 
         // run through the selection
@@ -47,12 +47,12 @@ function rectAreaChart() {
             });
 
             // Set the domain for the scales based on the data
-            scaleWidth = scaleWidth.domain([0, d3.max(data, function(row) {
+            scaleX = scaleX.domain([0, d3.max(data, function(row) {
                 return row[0]*3;
             })]);  // return
             scaleY = scaleY.domain([0, 100]); // weight
 
-            xAxis = d3.axisBottom(scaleWidth);
+            xAxis = d3.axisBottom(scaleX);
             yAxis = d3.axisLeft(scaleY);
 
             // Run the selectall magic to draw the rectangle areas.
@@ -60,16 +60,16 @@ function rectAreaChart() {
                 .data(data)
                 .enter()
                 .append('rect')
-                .attr('x', 0)
+                .attr('x', (d) => scaleX(d[1]))
                 .attr('y', function(d) {
-                    return scaleY(d[1]);
+                    return scaleY(d[2]);
                 })
-                .attr('width', (d) => scaleWidth(d[0]))
-                .attr('height', (d) => chartHeight - scaleY(d[1] - d[2]))
+                .attr('width', (d) => scaleX(d[0] - d[1]))
+                .attr('height', (d) => chartHeight - scaleY(d[2] - d[3]))
                 .attr('fill', function(d, i) {
                     return scaleColor(i);
                 })
-                .style('opacity', 0.5);
+                .style('opacity', 1);
 
             // Draw the axes
             g.append('g')

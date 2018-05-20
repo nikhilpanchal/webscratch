@@ -1,3 +1,5 @@
-return,weight,weight_offset
-10,50,0
-20,60,50
+return,return_offset,weight,weight_offset
+10,0,50,0
+10,0,60,50
+20,10,50,0
+20,10,60,50
