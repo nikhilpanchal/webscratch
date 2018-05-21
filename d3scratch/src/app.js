@@ -48,5 +48,4 @@ let reusable = new Reusable();
 // reusable.render();
 // reusable.renderLines();
 // reusable.renderArea();
-// reusable.renderRectangleArea();
-reusable.renderStackedBarChart();
+reusable.renderAttribution();

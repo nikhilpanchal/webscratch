@@ -66,9 +66,9 @@ function stackedBarChart() {
                 .data(function (row) {
                     return row.map(function (colData) {
                         return {
-                            name: colData.data.account,
+                            name: colData.data[nameColumn],
                             y: colData[1],
-                            height: colData[0],
+                            height: (colData[1] - colData[0]),
                             key: row.key
                         }
                     })
@@ -76,16 +76,16 @@ function stackedBarChart() {
                 .enter()
                 .append('rect')
                 .attr('x', function (point) {
-                    return scaleX(point.name)
+                    return scaleX(point.name);
                 })
                 .attr('y', function (point) {
-                    return scaleY(point.y)
+                    return scaleY(point.y);
                 })
                 .attr('width', function (point) {
                     return scaleX.bandwidth();
                 })
                 .attr('height', function (point) {
-                    return chartHeight - scaleY(point.y - point.height);
+                    return chartHeight - scaleY(point.height);
                 })
                 .attr('fill', function (point) {
                     return scaleColor(point.key);

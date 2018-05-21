@@ -106,24 +106,8 @@ export default class Reusable {
         });
     }
 
-    renderRectangleArea() {
-        let generator = RectangleAreaChartGenerator()
-            .height(400)
-            .width(600)
-            .margin({
-                left: 25, right: 20, top: 20, bottom: 25
-            })
-            .showLegend(true);
-
-        d3.csv('/resources/attribution.csv', function (data) {
-            d3.select('.container')
-                .datum(data)
-                .call(generator);
-        })
-    }
-
-    renderStackedBarChart() {
-        let generator = StackedBarChartGenerator()
+    renderAttribution() {
+        let multiAccountGenerator = StackedBarChartGenerator()
             .param('height', 400)
             .param('width', 600)
             .param('margin', {
@@ -131,10 +115,38 @@ export default class Reusable {
             })
             .param('legend', true);
 
-        d3.csv('/resources/attribution_breakdown.csv', function (data) {
+        d3.csv('/resources/attribution_multiple_accounts.csv', function (data) {
             d3.select('.container')
                 .datum(data)
-                .call(generator);
-        })
+                .call(multiAccountGenerator);
+        });
+
+        let accountSectorGenerator = StackedBarChartGenerator()
+            .param('height', 400)
+            .param('width', 600)
+            .param('margin', {
+                left: 25, right: 20, top: 20, bottom: 25
+            })
+            .param('legend', true);
+
+        d3.csv('/resources/account_attribution.csv', function (data) {
+            d3.select('.container')
+                .datum(data)
+                .call(accountSectorGenerator);
+        });
+
+        let sectorBreakDownGenerator = RectangleAreaChartGenerator()
+            .height(400)
+            .width(600)
+            .margin({
+                left: 25, right: 20, top: 20, bottom: 25
+            })
+            .showLegend(true);
+
+        d3.csv('/resources/account_sector_attribution.csv', function (data) {
+            d3.select('.container')
+                .datum(data)
+                .call(sectorBreakDownGenerator);
+        });
     }
 }
