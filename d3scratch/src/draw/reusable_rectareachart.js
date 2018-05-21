@@ -13,8 +13,6 @@ function rectAreaChart() {
         showLegend = false;
 
     function generator(selection) {
-        console.log("Displaying a rectangular area chart");
-
         let g, scaleY, scaleX, scaleColor,
             chartWidth = width - margin.left - margin.right,
             chartHeight = height - margin.top - margin.bottom,
@@ -56,7 +54,7 @@ function rectAreaChart() {
             yAxis = d3.axisLeft(scaleY);
 
             // Run the selectall magic to draw the rectangle areas.
-            g.selectAll('g')
+            g.selectAll('g')        // TODO: I think this should be selectAll(rect)
                 .data(data)
                 .enter()
                 .append('rect')

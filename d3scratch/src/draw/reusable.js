@@ -2,6 +2,7 @@ import {chartFactory} from './reusable_groupedbarchart';
 import {lineChartFactory} from "./reusable_linechart";
 import {StackedAreaChartFactory} from "./stackedarea";
 import {RectangleAreaChartGenerator} from "./reusable_rectareachart";
+import {StackedBarChartGenerator} from "./reusable_stackedbarchart";
 import * as d3 from 'd3';
 
 export default class Reusable {
@@ -115,6 +116,22 @@ export default class Reusable {
             .showLegend(true);
 
         d3.csv('/resources/attribution.csv', function (data) {
+            d3.select('.container')
+                .datum(data)
+                .call(generator);
+        })
+    }
+
+    renderStackedBarChart() {
+        let generator = StackedBarChartGenerator()
+            .param('height', 400)
+            .param('width', 600)
+            .param('margin', {
+                left: 25, right: 20, top: 20, bottom: 25
+            })
+            .param('legend', true);
+
+        d3.csv('/resources/attribution_breakdown.csv', function (data) {
             d3.select('.container')
                 .datum(data)
                 .call(generator);
