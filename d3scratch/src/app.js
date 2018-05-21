@@ -10,11 +10,11 @@ import Reusable from "./draw/reusable";
 
 
 // let rectangle = new Rectangle();
-// rectangle.render();
+// rectangle.renderGroupedBar();
 
 let data = [4, 8, 15, 16, 27, 40];
 // let bar = new BarChart();
-// bar.render(data);
+// bar.renderGroupedBar(data);
 
 function startPeriodicUpdates() {
     setInterval(() => {
@@ -26,26 +26,26 @@ function startPeriodicUpdates() {
 }
 
 // let barSvg = new BarSvg();
-// barSvg.render(data);
+// barSvg.renderGroupedBar(data);
 
 
 // let hist = new Histogram();
-// hist.render(data);
+// hist.renderGroupedBar(data);
 
 // let barDimple = new BarDimple();
-// barDimple.render();
+// barDimple.renderGroupedBar();
 
 // let worldCup = new WorldCupGraph();
-// worldCup.render();
+// worldCup.renderGroupedBar();
 
 // let maps = new Maps();
-// maps.render();
+// maps.renderGroupedBar();
 
 // let groupedBar = new GroupedBar();
-// groupedBar.render();
+// groupedBar.renderGroupedBar();
 
 let reusable = new Reusable();
-// reusable.render();
+// reusable.renderGroupedBar();
 // reusable.renderLines();
 // reusable.renderArea();
 reusable.renderAttribution();

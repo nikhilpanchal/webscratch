@@ -6,7 +6,7 @@ function stackedBarChart() {
         height: 0,
         width: 0,
         margin: {top: 0, bottom: 0, left: 0, right: 0},
-        legend: false
+        legend: true
     };
 
 
@@ -16,7 +16,8 @@ function stackedBarChart() {
             scaleColor,
             g,
             chartWidth = params.width - params.margin.left - params.margin.right,
-            chartHeight = params.height - params.margin.top - params.margin.bottom;
+            chartHeight = params.height - params.margin.top - params.margin.bottom,
+            legend = params.legend;
 
         // Create the chart container
         g = selection.append('svg')
@@ -98,6 +99,32 @@ function stackedBarChart() {
             g.append('g')
                 .attr('transform', `translate(0, ${chartHeight})`)
                 .call(d3.axisBottom(scaleX));
+
+            // Generate the legend
+            if (legend) {
+                let legend = g.append('g')
+                    .attr('transform', `translate(${chartWidth - params.margin.right}, 0)`)
+                    .attr("font-family", "sans-serif")
+                    .attr("font-size", 10)
+                    .selectAll('g')
+                    .data(numericColumns)
+                    .enter()
+                    .append('g')
+                    .attr('transform', (ageGroup, index) => {
+                        return `translate(0, ${20 * index})`;
+                    });
+
+                legend.append('rect')
+                    .attr('width', 20)
+                    .attr('height', 19)
+                    .attr('fill', scaleColor);
+
+                legend.append('text')
+                    .attr('text-anchor', 'end')
+                    .text((d) => d)
+                    .attr('x', -5)
+                    .attr('y', 12.5);
+            }
         });
 
     }

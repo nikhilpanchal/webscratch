@@ -10,13 +10,19 @@ function rectAreaChart() {
             left: 0,
             right: 0
         },
-        showLegend = false;
+        legend = false;
 
     function generator(selection) {
         let g, scaleY, scaleX, scaleColor,
             chartWidth = width - margin.left - margin.right,
             chartHeight = height - margin.top - margin.bottom,
             xAxis, yAxis;
+
+        let namedSections = [];
+        namedSections.push("Benchmark Return");
+        namedSections.push("Allocation");
+        namedSections.push("Selection");
+        namedSections.push("Interaction");
 
         // Create the container svg and a group element inside it
         g = selection.append('svg')
@@ -76,6 +82,32 @@ function rectAreaChart() {
 
             g.append('g')
                 .call(yAxis);
+
+            // Generate the legend
+            if (legend) {
+                let legend = g.append('g')
+                    .attr('transform', `translate(${chartWidth - margin.right}, 0)`)
+                    .attr("font-family", "sans-serif")
+                    .attr("font-size", 10)
+                    .selectAll('g')
+                    .data(namedSections)
+                    .enter()
+                    .append('g')
+                    .attr('transform', (ageGroup, index) => {
+                        return `translate(0, ${20 * index})`;
+                    });
+
+                legend.append('rect')
+                    .attr('width', 20)
+                    .attr('height', 19)
+                    .attr('fill', scaleColor);
+
+                legend.append('text')
+                    .attr('text-anchor', 'end')
+                    .text((d) => d)
+                    .attr('x', -5)
+                    .attr('y', 12.5);
+            }
         });
     }
 
@@ -108,12 +140,12 @@ function rectAreaChart() {
         return generator;
     };
 
-    generator.showLegend = function (_) {
+    generator.legend = function (_) {
         if (!arguments.length) {
-            return showLegend;
+            return legend;
         }
 
-        showLegend = _;
+        legend = _;
         return generator;
     };
 

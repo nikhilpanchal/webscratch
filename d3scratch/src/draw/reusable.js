@@ -9,7 +9,7 @@ export default class Reusable {
     constructor() {
     }
 
-    render() {
+    renderGroupedBar() {
         let generator = chartFactory()
             .width(600)
             .height(300)
@@ -141,7 +141,7 @@ export default class Reusable {
             .margin({
                 left: 25, right: 20, top: 20, bottom: 25
             })
-            .showLegend(true);
+            .legend(true);
 
         d3.csv('/resources/account_sector_attribution.csv', function (data) {
             d3.select('.container')
