@@ -5,6 +5,7 @@ function stackedBarChart() {
     let params = {
         height: 0,
         width: 0,
+        animationDuration: 0,
         margin: {top: 0, bottom: 0, left: 0, right: 0},
         legend: true
     };
@@ -58,11 +59,12 @@ function stackedBarChart() {
                 return row.total;
             })]);
 
-            // run the selectall magic
-            g.selectAll('g')
+            // run the selectall magic and set the horizontal attributes of the bars
+            // the vertical attributes like height and y values are set to 0.
+            let stackedBar = g.selectAll('g')
                 .data(d3.stack().keys(numericColumns)(data))
                 .enter()
-                .append('g')        // A group representing each stacked bar
+                .append('g')       // A group representing each stacked bar
                 .selectAll('rect')
                 .data(function (row) {
                     return row.map(function (colData) {
@@ -80,17 +82,30 @@ function stackedBarChart() {
                     return scaleX(point.name);
                 })
                 .attr('y', function (point) {
-                    return scaleY(point.y);
+                    return scaleY(0);
                 })
                 .attr('width', function (point) {
                     return scaleX.bandwidth();
                 })
                 .attr('height', function (point) {
-                    return chartHeight - scaleY(point.height);
+                    return 0;
                 })
                 .attr('fill', function (point) {
                     return scaleColor(point.key);
                 });
+
+            // Animate the bars to appear by gradually expanding to their height
+            // by setting their y and height values
+            stackedBar
+                .transition()
+                .attr('y', function (point) {
+                    return scaleY(point.y)
+                })
+                .attr('height', function (point) {
+                    return chartHeight - scaleY(point.height)
+                })
+                .duration(params.animationDuration);
+
 
             // Draw the axes
             g.append('g')

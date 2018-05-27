@@ -113,6 +113,7 @@ export default class Reusable {
             .param('margin', {
                 left: 25, right: 20, top: 20, bottom: 25
             })
+            .param('animationDuration', 500)
             .param('legend', true);
 
         d3.csv('/resources/attribution_multiple_accounts.csv', function (data) {
@@ -127,6 +128,7 @@ export default class Reusable {
             .param('margin', {
                 left: 25, right: 20, top: 20, bottom: 25
             })
+            .param('animationDuration', 500)
             .param('legend', true);
 
         d3.csv('/resources/account_attribution.csv', function (data) {
