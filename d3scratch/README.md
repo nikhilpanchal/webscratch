@@ -38,9 +38,26 @@ To add a new chart, run through the following steps.
    * Import the css file in the `styles/app.css` file
    * Import the .js file in `src/app.js`, create an instance, and call the render function
    
-## Running the project
+## Commands for the project
 
+### Running the project
 ```javascript
 npm start
 ```
+
+Starts the local webpack dev server on port 8080
+
+### Running the prod build
+```javascript
+npm run build-prod
+```
+
+This will create a minimized and uglified build that can be deployed to a production server
+
+### Deploying the build
+```javascript
+firebase deploy
+```
+
+This will deploy it to the firebase web server
    

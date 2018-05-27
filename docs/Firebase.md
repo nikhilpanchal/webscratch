@@ -13,7 +13,7 @@ just run through the following steps to deploy the project to firebase
    resources of your app
    * Choose not to overwrite index.html in the next couple of steps
  * Create a firebase project by going to console.firebase.google.com
- * Use the create project `firebase use --add`
+ * Use the created project `firebase use --add`
  * Deploy the project `firebase deploy`
  
 Thats it !  
