@@ -1,4 +1,4 @@
-import * as d3  from 'd3';
+import * as d3 from 'd3';
 
 
 function stackedBarChart() {
@@ -7,7 +7,9 @@ function stackedBarChart() {
         width: 0,
         animationDuration: 0,
         margin: {top: 0, bottom: 0, left: 0, right: 0},
-        legend: true
+        legend: true,
+        xAxisLabel: '',
+        yAxisLabel: ''
     };
 
 
@@ -31,7 +33,7 @@ function stackedBarChart() {
         // Create the scales
         scaleX = d3.scaleBand().rangeRound([0, chartWidth]).paddingOuter(0.2).paddingInner(0.05);
         scaleY = d3.scaleLinear().range([chartHeight, 0]);
-        scaleColor = d3.scaleOrdinal().range(["firebrick","tan","bisque"]);
+        scaleColor = d3.scaleOrdinal().range(["firebrick", "tan", "bisque"]);
 
         // draw the chart
         selection.each(function (data) {
@@ -73,8 +75,8 @@ function stackedBarChart() {
                             y: colData[1],
                             height: (colData[1] - colData[0]),
                             key: row.key
-                        }
-                    })
+                        };
+                    });
                 })
                 .enter()
                 .append('rect')
@@ -99,21 +101,35 @@ function stackedBarChart() {
             stackedBar
                 .transition()
                 .attr('y', function (point) {
-                    return scaleY(point.y)
+                    return scaleY(point.y);
                 })
                 .attr('height', function (point) {
-                    return chartHeight - scaleY(point.height)
+                    return chartHeight - scaleY(point.height);
                 })
                 .duration(params.animationDuration);
 
 
             // Draw the axes
             g.append('g')
-                .call(d3.axisLeft(scaleY));
+                .call(d3.axisLeft(scaleY))
+                .attr("y", scaleY(scaleY.ticks().pop()))
+                .append('text')
+                .attr("fill", "#000")
+                .attr("text-anchor", "start")
+                .attr('dy', '3.25em')
+                .attr('dx', '1%')
+                .attr('transform', 'rotate(90)')
+                .text(params.yAxisLabel);
 
             g.append('g')
                 .attr('transform', `translate(0, ${chartHeight})`)
-                .call(d3.axisBottom(scaleX));
+                .call(d3.axisBottom(scaleX))
+                .append('text')
+                .attr("fill", "#000")
+                .attr("text-anchor", "start")
+                .attr('dy', '2.75em')
+                .attr('dx', '82%')
+                .text(params.xAxisLabel);
 
             // Generate the legend
             if (legend) {

@@ -111,9 +111,11 @@ export default class Reusable {
             .param('height', 400)
             .param('width', 600)
             .param('margin', {
-                left: 25, right: 20, top: 20, bottom: 25
+                left: 50, right: 20, top: 20, bottom: 50
             })
             .param('animationDuration', 500)
+            .param('xAxisLabel', 'Accounts')
+            .param('yAxisLabel', 'Excess Return')
             .param('legend', true);
 
         d3.csv('/resources/attribution_multiple_accounts.csv', function (data) {
@@ -126,9 +128,11 @@ export default class Reusable {
             .param('height', 400)
             .param('width', 600)
             .param('margin', {
-                left: 25, right: 20, top: 20, bottom: 25
+                left: 50, right: 20, top: 20, bottom: 50
             })
             .param('animationDuration', 500)
+            .param('xAxisLabel', 'Accounts')
+            .param('yAxisLabel', 'Excess Return')
             .param('legend', true);
 
         d3.csv('/resources/account_attribution.csv', function (data) {
