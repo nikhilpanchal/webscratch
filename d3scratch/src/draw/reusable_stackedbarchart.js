@@ -112,23 +112,21 @@ function stackedBarChart() {
             // Draw the axes
             g.append('g')
                 .call(d3.axisLeft(scaleY))
-                .attr("y", scaleY(scaleY.ticks().pop()))
                 .append('text')
+                .attr('transform', 'rotate(90)')
                 .attr("fill", "#000")
                 .attr("text-anchor", "start")
                 .attr('dy', '3.25em')
-                .attr('dx', '1%')
-                .attr('transform', 'rotate(90)')
                 .text(params.yAxisLabel);
 
             g.append('g')
                 .attr('transform', `translate(0, ${chartHeight})`)
                 .call(d3.axisBottom(scaleX))
                 .append('text')
+                .attr('x', chartWidth)
                 .attr("fill", "#000")
-                .attr("text-anchor", "start")
+                .attr("text-anchor", "end")
                 .attr('dy', '2.75em')
-                .attr('dx', '82%')
                 .text(params.xAxisLabel);
 
             // Generate the legend
