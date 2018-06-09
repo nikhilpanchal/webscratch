@@ -9,7 +9,8 @@
     "test": "echo \"No test specified\"",
     "build": "babel src -d lib",
     "start": "webpack-dev-server",
-    "build-prod": "webpack -p"
+    "build-prod": "webpack -p",
+    "deploy": "firebase deploy"
   },
   "dependencies": {
     "d3": "^4.9.1",
