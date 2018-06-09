@@ -145,8 +145,10 @@ export default class Reusable {
             .height(400)
             .width(600)
             .margin({
-                left: 25, right: 20, top: 20, bottom: 25
+                left: 50, right: 20, top: 20, bottom: 50
             })
+            .xAxisLabel("Return")
+            .yAxisLabel("Weight")
             .legend(true);
 
         d3.csv('/resources/account_sector_attribution.csv', function (data) {

@@ -1,4 +1,6 @@
 import * as d3 from 'd3';
+import {Axes as axes} from "./chart_utilities";
+import {legend as legendFactory} from "./chart_utilities";
 
 
 function rectAreaChart() {
@@ -10,13 +12,15 @@ function rectAreaChart() {
             left: 0,
             right: 0
         },
-        legend = false;
+        legend = false,
+        xAxisLabel, yAxisLabel,
+        legend_generator;
 
     function generator(selection) {
         let g, scaleY, scaleX, scaleColor,
             chartWidth = width - margin.left - margin.right,
             chartHeight = height - margin.top - margin.bottom,
-            xAxis, yAxis;
+            xAxis, yAxis, axes_generator;
 
         let namedSections = [];
         namedSections.push("Benchmark Return");
@@ -39,10 +43,22 @@ function rectAreaChart() {
             .range(['firebrick', 'bisque', 'sandybrown', 'tan'])
             .domain([0, 1]);
 
+        axes_generator = axes()
+            .chartHeight(chartHeight)
+            .chartWidth(chartWidth)
+            .scaleX(scaleX)
+            .scaleY(scaleY)
+            .xAxisLabel(xAxisLabel)
+            .yAxisLabel(yAxisLabel);
+
+        legend_generator = legendFactory()
+            .chartWidth(chartWidth)
+            .marginRight(margin.right)
+            .scaleColor(scaleColor)
+            .labels(namedSections);
+
         // run through the selection
         selection.each(function (data) {
-            console.log("The data passed in ", data);
-
             // Convert the data strings to integers
             data = data.map(function (row) {
                 return data.columns.map(function (col) {
@@ -76,37 +92,11 @@ function rectAreaChart() {
                 .style('opacity', 1);
 
             // Draw the axes
-            g.append('g')
-                .attr('transform', `translate(0, ${chartHeight})`)
-                .call(xAxis);
-
-            g.append('g')
-                .call(yAxis);
+            axes_generator(g);
 
             // Generate the legend
             if (legend) {
-                let legend = g.append('g')
-                    .attr('transform', `translate(${chartWidth - margin.right}, 0)`)
-                    .attr("font-family", "sans-serif")
-                    .attr("font-size", 10)
-                    .selectAll('g')
-                    .data(namedSections)
-                    .enter()
-                    .append('g')
-                    .attr('transform', (ageGroup, index) => {
-                        return `translate(0, ${20 * index})`;
-                    });
-
-                legend.append('rect')
-                    .attr('width', 20)
-                    .attr('height', 19)
-                    .attr('fill', scaleColor);
-
-                legend.append('text')
-                    .attr('text-anchor', 'end')
-                    .text((d) => d)
-                    .attr('x', -5)
-                    .attr('y', 12.5);
+                legend_generator(g);
             }
         });
     }
@@ -146,6 +136,24 @@ function rectAreaChart() {
         }
 
         legend = _;
+        return generator;
+    };
+
+    generator.xAxisLabel = function (_) {
+        if (!arguments.length) {
+            return xAxisLabel;
+        }
+
+        xAxisLabel = _;
+        return generator;
+    };
+
+    generator.yAxisLabel = function (_) {
+        if (!arguments.length) {
+            return yAxisLabel;
+        }
+
+        yAxisLabel = _;
         return generator;
     };
 

@@ -1,4 +1,6 @@
 import * as d3 from 'd3';
+import {Axes as axes} from "./chart_utilities";
+import {legend as legendFactory} from "./chart_utilities";
 
 
 function stackedBarChart() {
@@ -18,9 +20,11 @@ function stackedBarChart() {
             scaleX,
             scaleColor,
             g,
+            axes_generator,
             chartWidth = params.width - params.margin.left - params.margin.right,
             chartHeight = params.height - params.margin.top - params.margin.bottom,
-            legend = params.legend;
+            legend = params.legend,
+            legend_generator;
 
         // Create the chart container
         g = selection.append('svg')
@@ -35,9 +39,24 @@ function stackedBarChart() {
         scaleY = d3.scaleLinear().range([chartHeight, 0]);
         scaleColor = d3.scaleOrdinal().range(["firebrick", "tan", "bisque"]);
 
+        axes_generator = axes()
+            .chartHeight(chartHeight)
+            .chartWidth(chartWidth)
+            .scaleX(scaleX)
+            .scaleY(scaleY)
+            .xAxisLabel(params.xAxisLabel)
+            .yAxisLabel(params.yAxisLabel);
+
+        legend_generator = legendFactory()
+            .chartWidth(chartWidth)
+            .marginRight(params.margin.right)
+            .scaleColor(scaleColor);
+
         // draw the chart
         selection.each(function (data) {
             let numericColumns = data.columns.slice(1);
+
+            legend_generator = legend_generator.labels(numericColumns);
 
             // Convert the data to numeric values
             data.map(function (row) {
@@ -85,16 +104,19 @@ function stackedBarChart() {
                 })
                 .attr('y', function (point) {
                     return scaleY(0);
+                    // return scaleY(point.y);
                 })
                 .attr('width', function (point) {
                     return scaleX.bandwidth();
                 })
                 .attr('height', function (point) {
                     return 0;
+                    // return chartHeight - scaleY(point.height);
                 })
                 .attr('fill', function (point) {
                     return scaleColor(point.key);
-                });
+                })
+            ;
 
             // Animate the bars to appear by gradually expanding to their height
             // by setting their y and height values
@@ -110,49 +132,11 @@ function stackedBarChart() {
 
 
             // Draw the axes
-            g.append('g')
-                .call(d3.axisLeft(scaleY))
-                .append('text')
-                .attr('transform', 'rotate(90)')
-                .attr("fill", "#000")
-                .attr("text-anchor", "start")
-                .attr('dy', '3.25em')
-                .text(params.yAxisLabel);
-
-            g.append('g')
-                .attr('transform', `translate(0, ${chartHeight})`)
-                .call(d3.axisBottom(scaleX))
-                .append('text')
-                .attr('x', chartWidth)
-                .attr("fill", "#000")
-                .attr("text-anchor", "end")
-                .attr('dy', '2.75em')
-                .text(params.xAxisLabel);
+            axes_generator(g);
 
             // Generate the legend
             if (legend) {
-                let legend = g.append('g')
-                    .attr('transform', `translate(${chartWidth - params.margin.right}, 0)`)
-                    .attr("font-family", "sans-serif")
-                    .attr("font-size", 10)
-                    .selectAll('g')
-                    .data(numericColumns)
-                    .enter()
-                    .append('g')
-                    .attr('transform', (ageGroup, index) => {
-                        return `translate(0, ${20 * index})`;
-                    });
-
-                legend.append('rect')
-                    .attr('width', 20)
-                    .attr('height', 19)
-                    .attr('fill', scaleColor);
-
-                legend.append('text')
-                    .attr('text-anchor', 'end')
-                    .text((d) => d)
-                    .attr('x', -5)
-                    .attr('y', 12.5);
+                legend_generator(g);
             }
         });
 
