@@ -48,4 +48,5 @@ let reusable = new Reusable();
 // reusable.renderGroupedBar();
 // reusable.renderLines();
 // reusable.renderArea();
-reusable.renderAttribution();
+// reusable.renderAttribution();
+reusable.renderTree();

@@ -1,6 +1,6 @@
 import * as d3 from 'd3';
 
-function StackedAreaChartFactory() {
+function StackedAreaChartGenerator() {
     let height,
         width,
         margin,
@@ -118,4 +118,4 @@ function StackedAreaChartFactory() {
     return generator;
 }
 
-export {StackedAreaChartFactory};
+export {StackedAreaChartGenerator};

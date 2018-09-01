@@ -1,8 +1,9 @@
 import {chartFactory} from './reusable_groupedbarchart';
-import {lineChartFactory} from "./reusable_linechart";
-import {StackedAreaChartFactory} from "./stackedarea";
+import {lineChartGenerator} from "./reusable_linechart";
+import {StackedAreaChartGenerator} from "./stackedarea";
 import {RectangleAreaChartGenerator} from "./reusable_rectareachart";
 import {StackedBarChartGenerator} from "./reusable_stackedbarchart";
+import {TreeGenerator} from "./reusable_tree";
 import * as d3 from 'd3';
 
 export default class Reusable {
@@ -30,7 +31,7 @@ export default class Reusable {
     }
 
     renderLines() {
-        let chart = lineChartFactory()
+        let chart = lineChartGenerator()
             .width(600)
             .height(300)
             .margin({
@@ -52,7 +53,7 @@ export default class Reusable {
                 .call(chart);
         });
 
-        let chartNew = lineChartFactory()
+        let chartNew = lineChartGenerator()
             .width(1204)
             .height(300)
             .margin({
@@ -78,7 +79,7 @@ export default class Reusable {
     renderArea() {
         let timeParse = d3.timeParse("%b-%y");
 
-        let generator = StackedAreaChartFactory()
+        let generator = StackedAreaChartGenerator()
             .width(1200)
             .height(600)
             .margin({
@@ -156,5 +157,18 @@ export default class Reusable {
                 .datum(data)
                 .call(sectorBreakDownGenerator);
         });
+    }
+
+    renderTree() {
+        let treeGenerator = TreeGenerator()
+            .height(500)
+            .width(600)
+            .margin({left: 50, right: 20, top: 20, bottom: 50});
+
+        d3.json('/resources/hierarchy.json', function(data) {
+            d3.select('.container')
+                .datum(data)
+                .call(treeGenerator);
+        })
     }
 }

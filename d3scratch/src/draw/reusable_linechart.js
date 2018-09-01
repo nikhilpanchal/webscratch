@@ -1,6 +1,6 @@
 import * as d3 from 'd3';
 
-function lineChartFactory() {
+function lineChartGenerator() {
     let height,
         width,
         margin,
@@ -126,4 +126,4 @@ function lineChartFactory() {
     return chart;
 }
 
-export {lineChartFactory};
+export {lineChartGenerator};
