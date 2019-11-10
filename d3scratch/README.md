@@ -11,7 +11,7 @@ files each of which create a separate d3 graph.
 
 ### Styles
 The compilation and inclusion of styles is handled by the webpack loader. The format that is followed is the styles have
-an `app.css` file that is the root of all styles. This file will import other .css files that are in the `styles/home` 
+an `app.css` file t11hat is the root of all styles. This file will import other .css files that are in the `styles/home` 
 directory. Each .css file in this directory is used by a corresponding .js file from `src/draw`
 
 ### Build

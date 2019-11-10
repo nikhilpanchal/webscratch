@@ -1,0 +1,16 @@
+{
+  "name": "npmscratch",
+  "version": "1.0.0",
+  "description": "Scratching about with npm",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Nikhil",
+  "license": "ISC",
+  "devDependencies": {
+  },
+  "dependencies": {
+    "react": "^16.5.2"
+  }
+}
